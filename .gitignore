@@ -1,0 +1,15 @@
+node_modules
+dist
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+
+# Runtime participant/test data — never commit
+data/**/*.json
+data/sessions/*
+!data/sessions/.gitkeep
+data/participant_assignments/*
+!data/participant_assignments/.gitkeep
+*.csv
