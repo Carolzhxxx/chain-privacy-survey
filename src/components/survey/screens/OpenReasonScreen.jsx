@@ -1,7 +1,6 @@
 import {
   ANCHORS_STAGE_ACCEPTABILITY,
   OPEN_REASON_PLACEHOLDER,
-  OPEN_REASON_QUESTION,
 } from '../../../config/study.js';
 import { useLanguage } from '../../../i18n/LanguageContext.jsx';
 import OpenTextField from '../OpenTextField.jsx';
@@ -65,7 +64,7 @@ function OpenReasonScreen({
 
       <div className="survey-card-body">
         <OpenTextField
-          label={OPEN_REASON_QUESTION}
+          ariaLabel={meta.title}
           placeholder={OPEN_REASON_PLACEHOLDER}
           value={value}
           onChange={onChange}

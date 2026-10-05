@@ -3,6 +3,7 @@ import {
   HOP_SECONDARY_QUESTION_IDS,
 } from '../config/options.js';
 import { SUBMIT_SCREEN_ID } from '../config/screens.js';
+import { createEmptyComprehensionAnswers } from './comprehension.js';
 import {
   PILOT_MODE,
   SCENARIO_CONDITIONS,
@@ -93,9 +94,11 @@ export function createEmptyRound(roundId, roundOrder) {
     hop3: createEmptyHopRatings(true),
     reason_abc_open: null,
     reason_abcd_open: null,
+    reason_b_c_difference_open: null,
     reason_c_d_difference_open: null,
     judgment_factors: [],
     judgment_factors_other: null,
+    judgment_basis_ranking: [],
     primary_judgment_basis: null,
     primary_judgment_basis_other: null,
     scenario_realism: null,
@@ -113,6 +116,7 @@ export function createEmptyAnswers() {
     permission_preference: null,
     sharing_comfort: null,
     attention_check: null,
+    ...createEmptyComprehensionAnswers(),
 
     // knows_AB comes from the assigned A–B condition; R_AB_raw is only asked
     // when A knows B. B_relationship_type, realism_B / realism_BC /

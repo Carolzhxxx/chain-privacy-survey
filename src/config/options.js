@@ -10,7 +10,6 @@ export const DEMOGRAPHICS_ENABLED = {
 };
 
 export const GENDER_OPTIONS = [
-  { value: 'prefer_not', label: { en: 'Prefer not to answer', zh: '不愿回答' } },
   { value: 'woman', label: { en: 'Woman', zh: '女性' } },
   { value: 'man', label: { en: 'Man', zh: '男性' } },
   { value: 'non_binary', label: { en: 'Non-binary', zh: '非二元性别' } },

@@ -13,6 +13,7 @@ export const ROUND_STEPS = [
   { step: 'hop1', label: { en: 'B knows', zh: 'B 知情' } },
   { step: 'hop2', label: { en: 'C knows', zh: 'C 知情' } },
   { step: 'hop2_reason', label: { en: 'Your reason (C)', zh: '评分理由（C）' }, probe: true },
+  { step: 'bc_compare', label: { en: 'B vs. C', zh: 'B 与 C 比较' }, probe: true },
   { step: 'hop3', label: { en: 'D knows', zh: 'D 知情' } },
   { step: 'hop3_reason', label: { en: 'Your reason (D)', zh: '评分理由（D）' }, probe: true },
   { step: 'cd_compare', label: { en: 'C vs. D', zh: 'C 与 D 比较' }, probe: true },
@@ -49,6 +50,7 @@ export const SCREENS = [
   { id: 'consent', label: { en: 'Consent', zh: '知情同意' } },
   { id: 'baseline', label: { en: 'Privacy attitudes', zh: '一般隐私倾向' } },
   { id: 'chain_intro', label: { en: 'Background and roles', zh: '实验背景与角色' } },
+  { id: 'comprehension', label: { en: 'Comprehension check', zh: '理解检查' } },
   ...Array.from({ length: SCENARIOS_PER_PARTICIPANT }, (_, i) => scenarioScreens(i + 1)).flat(),
   { id: 'completion', label: { en: 'Done', zh: '完成' } },
 ].map((screen, index) => ({ ...screen, index }));

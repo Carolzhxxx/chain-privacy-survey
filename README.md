@@ -169,9 +169,11 @@ pilot participant, 2 per formal participant), one variable per column:
 `bc_relation_condition`, `cd_relation_condition`, `knows_bc`, `knows_cd`,
 `owner_c/owner_d/bc/cd_relation_seed`, `relationship_assignment_method`, `knows_ab/ac/ad`, `r_ab/ac/ad/bc/cd` (+ `r_bc_unsure`, `r_cd_unsure`),
 `permission_condition`, `c_prior_knowledge`, `d_prior_knowledge`,
-`acceptability_ab/abc/abcd`, the three open reasons, `judgment_factors` (JSON
-list) plus one-hot `factor_*` columns, `judgment_factors_other`,
-`primary_judgment_basis(_other)`, `scenario_realism`, and start/end time per
+`acceptability_ab/abc/abcd`, the four open reasons (C, D, B vs. C, C vs. D),
+`judgment_factors` (JSON list) plus one-hot `factor_*` columns,
+`judgment_factors_other`, `judgment_basis_ranking` (JSON list, most important
+first) plus `basis_rank_*` (1–3), `primary_judgment_basis` (= ranked first),
+`primary_judgment_basis_other` (optional), `scenario_realism`, and start/end time per
 scenario screen.
 
 Wide and long CSV carry the same relationship-assignment columns; long CSV
@@ -189,6 +191,13 @@ analysis time, e.g. `knows_ac === false ? 0 : (r_ac − 1) / 6`.
 the items are not a validated IUIPC version. The attention check is excluded
 from it and exported separately as `attention_check_passed` (selected 4).
 Age and gender are demographic controls.
+
+A comprehension-check page follows `chain_intro` (questions in
+`COMPREHENSION_QUESTIONS`, `src/config/surveyQuestions.js`): did A allow B to
+share, whom C heard it from, and whether C already knew. Wrong answers show an
+explanation and must be corrected before continuing. Exports keep the first
+attempt: `comprehension_first_*`, `comprehension_first_*_correct`,
+`comprehension_attempts`, `comprehension_passed_first_try`.
 
 Do **not** fit δ / λ, β_bc / β_cd in the frontend; they are estimated afterwards.
 

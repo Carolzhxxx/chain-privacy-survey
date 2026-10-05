@@ -3,8 +3,10 @@ import { PRIVACY_WARNING } from '../../config/options.js';
 import { OPEN_TEXT_MAX_LENGTH } from '../../config/study.js';
 import { useLanguage } from '../../i18n/LanguageContext.jsx';
 
+/** Pass `ariaLabel` instead of `label` when the page heading already asks the question. */
 function OpenTextField({
   label,
+  ariaLabel,
   value,
   onChange,
   error,
@@ -20,9 +22,11 @@ function OpenTextField({
 
   return (
     <div className="field-label">
-      <label htmlFor={id} className="question-text">
-        {t(label)}
-      </label>
+      {label ? (
+        <label htmlFor={id} className="question-text">
+          {t(label)}
+        </label>
+      ) : null}
       <p id={hintId} className="field-hint">
         {t(PRIVACY_WARNING)}
       </p>
@@ -31,6 +35,7 @@ function OpenTextField({
         className="textarea-input"
         rows={rows}
         maxLength={maxLength}
+        aria-label={label ? undefined : t(ariaLabel)}
         placeholder={placeholder ? t(placeholder) : undefined}
         value={text}
         aria-invalid={Boolean(error)}

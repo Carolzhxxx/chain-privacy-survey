@@ -5,22 +5,24 @@ import {
   JUDGMENT_FACTORS_QUESTION,
   MAX_JUDGMENT_FACTORS,
   PRIMARY_BASIS_OPTIONS,
+  PRIMARY_BASIS_OTHER_QUESTION,
   PRIMARY_BASIS_QUESTION,
+  PRIMARY_BASIS_RANK_HINT,
 } from '../../../config/study.js';
 import { useLanguage } from '../../../i18n/LanguageContext.jsx';
 import CheckboxGroup from '../CheckboxGroup.jsx';
-import OptionSelect from '../OptionSelect.jsx';
+import RankingSelect from '../RankingSelect.jsx';
 import ScenarioCard from '../ScenarioCard.jsx';
 import SurveyNavigation from '../SurveyNavigation.jsx';
 
 const OTHER_LABEL = { en: 'Please specify “Other”', zh: '请说明“其他”' };
 
-function OtherInput({ value, onChange, error }) {
+function OtherInput({ label = OTHER_LABEL, value, onChange, error }) {
   const { t } = useLanguage();
   const id = useId();
   return (
     <div className="field-label other-input">
-      <label htmlFor={id}>{t(OTHER_LABEL)}</label>
+      <label htmlFor={id}>{t(label)}</label>
       <p className="field-hint">{t(PRIVACY_WARNING)}</p>
       <input
         id={id}
@@ -42,7 +44,8 @@ function OtherInput({ value, onChange, error }) {
 
 /**
  * Closed-ended items, asked once per scenario after all open probes.
- * part="factors": judgment_factors; part="basis": primary_judgment_basis.
+ * part="factors": judgment_factors; part="basis": judgment_basis_ranking
+ * (primary_judgment_basis = the item ranked first).
  */
 function JudgmentScreen({ part, itemId, round, onChangeRound, errors, onBack, onNext }) {
   const { t } = useLanguage();
@@ -84,23 +87,22 @@ function JudgmentScreen({ part, itemId, round, onChangeRound, errors, onBack, on
           </>
         ) : (
           <>
-            <OptionSelect
+            <RankingSelect
               label={PRIMARY_BASIS_QUESTION}
+              hint={PRIMARY_BASIS_RANK_HINT}
               options={PRIMARY_BASIS_OPTIONS}
-              value={round.primary_judgment_basis}
-              error={errors.primary_judgment_basis}
-              onChange={(value) => {
-                onChangeRound('primary_judgment_basis', value);
-                if (value !== 'other') onChangeRound('primary_judgment_basis_other', null);
+              value={round.judgment_basis_ranking ?? []}
+              error={errors.judgment_basis_ranking}
+              onChange={(next) => {
+                onChangeRound('judgment_basis_ranking', next);
+                onChangeRound('primary_judgment_basis', next[0] ?? null);
               }}
             />
-            {round.primary_judgment_basis === 'other' ? (
-              <OtherInput
-                value={round.primary_judgment_basis_other}
-                onChange={(value) => onChangeRound('primary_judgment_basis_other', value)}
-                error={errors.primary_judgment_basis_other}
-              />
-            ) : null}
+            <OtherInput
+              label={PRIMARY_BASIS_OTHER_QUESTION}
+              value={round.primary_judgment_basis_other}
+              onChange={(value) => onChangeRound('primary_judgment_basis_other', value || null)}
+            />
           </>
         )}
       </div>

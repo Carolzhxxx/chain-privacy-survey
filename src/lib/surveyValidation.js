@@ -1,9 +1,12 @@
 import { DEMOGRAPHICS_ENABLED } from '../config/options.js';
+import { COMPREHENSION_QUESTIONS } from '../config/surveyQuestions.js';
+import { comprehensionField, wrongComprehensionIds } from './comprehension.js';
 import { getRoundNumber, getRoundStep } from '../config/screens.js';
 import {
   MAX_JUDGMENT_FACTORS,
   OPEN_TEXT_MAX_LENGTH,
   OPEN_TEXT_MIN_LENGTH,
+  PRIMARY_BASIS_VALUES,
 } from '../config/study.js';
 import { isValidRelationshipAssignment } from './relationshipAssignment.js';
 
@@ -25,8 +28,8 @@ const MSG = {
     zh: '信息尚未加载，请稍候或重试。',
   },
   openTooShort: {
-    en: `Please write a short answer (at least ${OPEN_TEXT_MIN_LENGTH} characters; one or two sentences is enough).`,
-    zh: `请简要作答（至少 ${OPEN_TEXT_MIN_LENGTH} 个字，一到两句话即可）。`,
+    en: `Please write a short answer (at least ${OPEN_TEXT_MIN_LENGTH} characters).`,
+    zh: `请简要作答（至少 ${OPEN_TEXT_MIN_LENGTH} 个字）。`,
   },
   openTooLong: {
     en: `Please keep your answer under ${OPEN_TEXT_MAX_LENGTH} characters.`,
@@ -40,6 +43,17 @@ const MSG = {
     en: 'Please briefly describe “Other”.',
     zh: '请简要填写“其他”的内容。',
   },
+  rankingIncomplete: {
+    en: 'Please rank all of the options.',
+    zh: '请为所有选项排序。',
+  },
+};
+
+const OPEN_TEXT_STEP_FIELDS = {
+  hop2_reason: 'reason_abc_open',
+  hop3_reason: 'reason_abcd_open',
+  bc_compare: 'reason_b_c_difference_open',
+  cd_compare: 'reason_c_d_difference_open',
 };
 
 function relationshipAssigned(session) {
@@ -101,6 +115,22 @@ export function validateScreen(session, screenId) {
     case 'chain_intro':
       break;
 
+    case 'comprehension': {
+      const wrong = new Set(wrongComprehensionIds(answers));
+      for (const q of COMPREHENSION_QUESTIONS) {
+        const field = comprehensionField(q.id);
+        if (!isFilled(answers[field])) {
+          errors[field] = MSG.required;
+        } else if (wrong.has(q.id)) {
+          errors[field] = {
+            en: `Not quite. ${q.explanation.en} Please choose again.`,
+            zh: `回答不正确。${q.explanation.zh}请重新选择。`,
+          };
+        }
+      }
+      break;
+    }
+
     case 'person_b':
       if (!relationshipAssigned(session)) {
         errors.relationship_assignment = MSG.infoTypeMissing;
@@ -145,12 +175,8 @@ export function validateScreen(session, screenId) {
         requireLikert(round.sensitivity_raw, 'sensitivity_raw');
       } else if (step === 'hop1' || step === 'hop2' || step === 'hop3') {
         requireLikert(round[step]?.acceptability, 'acceptability');
-      } else if (step === 'hop2_reason' || step === 'hop3_reason' || step === 'cd_compare') {
-        const field = {
-          hop2_reason: 'reason_abc_open',
-          hop3_reason: 'reason_abcd_open',
-          cd_compare: 'reason_c_d_difference_open',
-        }[step];
+      } else if (OPEN_TEXT_STEP_FIELDS[step]) {
+        const field = OPEN_TEXT_STEP_FIELDS[step];
         const error = openTextError(round[field]);
         if (error) errors[field] = error;
       } else if (step === 'judgment_factors') {
@@ -166,13 +192,13 @@ export function validateScreen(session, screenId) {
       } else if (step === 'realism') {
         requireLikert(round.scenario_realism, 'scenario_realism');
       } else if (step === 'judgment_basis') {
-        requireValue(round.primary_judgment_basis, 'primary_judgment_basis');
-        if (
-          round.primary_judgment_basis === 'other' &&
-          !isFilled(round.primary_judgment_basis_other?.trim())
-        ) {
-          errors.primary_judgment_basis_other = MSG.otherMissing;
-        }
+        const ranking = Array.isArray(round.judgment_basis_ranking)
+          ? round.judgment_basis_ranking
+          : [];
+        const complete =
+          ranking.length === PRIMARY_BASIS_VALUES.length &&
+          PRIMARY_BASIS_VALUES.every((value) => ranking.includes(value));
+        if (!complete) errors.judgment_basis_ranking = MSG.rankingIncomplete;
       }
       break;
     }

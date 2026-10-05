@@ -3,8 +3,13 @@
  * (3 per scenario). Scenario: one row per participant × scenario.
  */
 
-import { JUDGMENT_FACTOR_VALUES, RELATIONSHIP_FACTORS } from '../config/study.js';
+import {
+  JUDGMENT_FACTOR_VALUES,
+  PRIMARY_BASIS_VALUES,
+  RELATIONSHIP_FACTORS,
+} from '../config/study.js';
 import { ATTENTION_CHECK, BASELINE_QUESTIONS } from '../config/surveyQuestions.js';
+import { COMPREHENSION_COLUMNS, comprehensionExportFields } from './comprehension.js';
 import { normalizeLikert } from './likertScale.js';
 
 /**
@@ -55,6 +60,7 @@ const WIDE_COLUMNS = [
   'general_privacy_concern',
   'attention_check',
   'attention_check_passed',
+  ...COMPREHENSION_COLUMNS,
   'scenario_vignette_id',
   'permission_condition',
   'c_prior_knowledge',
@@ -140,6 +146,7 @@ const LONG_COLUMNS = [
   'general_privacy_concern',
   'attention_check',
   'attention_check_passed',
+  ...COMPREHENSION_COLUMNS,
   'permission_condition',
   'c_prior_knowledge',
   'd_prior_knowledge',
@@ -177,6 +184,7 @@ const ROUND_TIMING_STEPS = [
   'hop1',
   'hop2',
   'hop2_reason',
+  'bc_compare',
   'hop3',
   'hop3_reason',
   'cd_compare',
@@ -220,11 +228,14 @@ const SCENARIO_COLUMNS = [
   'acceptability_abcd',
   'reason_abc_open',
   'reason_abcd_open',
+  'reason_b_c_difference_open',
   'reason_c_d_difference_open',
   'judgment_factors',
   'judgment_factors_count',
   ...JUDGMENT_FACTOR_VALUES.map((v) => `factor_${v}`),
   'judgment_factors_other',
+  'judgment_basis_ranking',
+  ...PRIMARY_BASIS_VALUES.map((v) => `basis_rank_${v}`),
   'primary_judgment_basis',
   'primary_judgment_basis_other',
   'scenario_realism',
@@ -233,6 +244,7 @@ const SCENARIO_COLUMNS = [
   'gender_self_describe',
   'general_privacy_concern',
   'attention_check_passed',
+  ...COMPREHENSION_COLUMNS,
   'assignment_seed',
   'assignment_block',
   'assignment_method',
@@ -269,6 +281,7 @@ function flattenSession(session) {
     ...session,
     general_privacy_concern: generalPrivacyConcern(session),
     attention_check_passed: attentionCheckPassed(session),
+    ...comprehensionExportFields(session),
     study_mode: session.study_mode ?? null,
     // In presentation order.
     assigned_item_ids: rounds.map((r) => r.information_item_id ?? null),
@@ -327,6 +340,7 @@ export function toLongRows(session) {
     general_privacy_concern: flat.general_privacy_concern,
     attention_check: flat.attention_check,
     attention_check_passed: flat.attention_check_passed,
+    ...Object.fromEntries(COMPREHENSION_COLUMNS.map((c) => [c, flat[c]])),
     permission_condition: flat.permission_condition,
     c_prior_knowledge: flat.c_prior_knowledge,
     d_prior_knowledge: flat.d_prior_knowledge,
@@ -435,6 +449,9 @@ export function toScenarioRows(session) {
   return rounds.map((round) => {
     const prefix = `r${round.round_id}_`;
     const factors = Array.isArray(round.judgment_factors) ? round.judgment_factors : [];
+    const basisRanking = Array.isArray(round.judgment_basis_ranking)
+      ? round.judgment_basis_ranking
+      : [];
     const timing = {};
     const visitedEnds = [];
     for (const step of ROUND_TIMING_STEPS) {
@@ -474,6 +491,7 @@ export function toScenarioRows(session) {
       acceptability_abcd: round.hop3?.acceptability ?? null,
       reason_abc_open: round.reason_abc_open ?? null,
       reason_abcd_open: round.reason_abcd_open ?? null,
+      reason_b_c_difference_open: round.reason_b_c_difference_open ?? null,
       reason_c_d_difference_open: round.reason_c_d_difference_open ?? null,
       judgment_factors: factors,
       judgment_factors_count: factors.length,
@@ -481,6 +499,13 @@ export function toScenarioRows(session) {
         JUDGMENT_FACTOR_VALUES.map((v) => [`factor_${v}`, factors.includes(v) ? 1 : 0]),
       ),
       judgment_factors_other: round.judgment_factors_other ?? null,
+      judgment_basis_ranking: basisRanking,
+      ...Object.fromEntries(
+        PRIMARY_BASIS_VALUES.map((v) => [
+          `basis_rank_${v}`,
+          basisRanking.includes(v) ? basisRanking.indexOf(v) + 1 : null,
+        ]),
+      ),
       primary_judgment_basis: round.primary_judgment_basis ?? null,
       primary_judgment_basis_other: round.primary_judgment_basis_other ?? null,
       scenario_realism: round.scenario_realism ?? null,
@@ -489,6 +514,7 @@ export function toScenarioRows(session) {
       gender_self_describe: flat.gender_self_describe ?? null,
       general_privacy_concern: flat.general_privacy_concern,
       attention_check_passed: flat.attention_check_passed,
+      ...Object.fromEntries(COMPREHENSION_COLUMNS.map((c) => [c, flat[c]])),
       assignment_seed: round.assignment_seed ?? null,
       assignment_block: round.assignment_block ?? null,
       assignment_method: round.assignment_method ?? null,

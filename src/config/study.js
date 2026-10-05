@@ -239,14 +239,21 @@ export const STAGE_ACCEPTABILITY_QUESTIONS = {
   },
 };
 
-export const OPEN_REASON_QUESTION = {
-  en: 'In one or two sentences, please explain why you gave the rating you just gave. There are no right or wrong answers; please write down what you considered first when answering.',
-  zh: '请用一到两句话说明，您为什么给出刚才的分数。回答没有对错，请写下您作答时最先考虑的因素。',
-};
-
 export const OPEN_REASON_PLACEHOLDER = {
   en: 'Please describe what you mainly considered when making this judgment…',
   zh: '请说明您作出这一判断时主要考虑了什么……',
+};
+
+export const BC_DIFFERENCE_QUESTION = {
+  en: 'Compared with B knowing this information, why was your acceptability rating for C knowing it higher, lower, or the same?',
+  zh: '与 B 知道这条信息相比，您对 C 知道这条信息的可接受度评分为什么更高、更低或保持不变？',
+};
+
+/** States the score difference only; never explains it. */
+export const BC_DIFFERENCE_SUMMARY = {
+  higher: { en: 'Your rating for C was higher than for B.', zh: '您对 C 的评分高于 B。' },
+  lower: { en: 'Your rating for C was lower than for B.', zh: '您对 C 的评分低于 B。' },
+  same: { en: 'You gave B and C the same rating.', zh: '您对 B 和 C 给出了相同的评分。' },
 };
 
 export const CD_DIFFERENCE_QUESTION = {
@@ -310,38 +317,46 @@ export const JUDGMENT_FACTOR_OPTIONS = [
 export const JUDGMENT_FACTOR_VALUES = JUDGMENT_FACTOR_OPTIONS.map((o) => o.value);
 
 export const PRIMARY_BASIS_QUESTION = {
-  en: 'Which of the following comes closest to your main consideration when making your judgments?',
-  zh: '下面哪一项最接近您作出判断时的主要考虑？',
+  en: 'How important was each of the following for your judgments? Please rank them by clicking them in order, starting with the most important.',
+  zh: '以下几方面对您作出判断的重要程度如何？请从最重要的开始，依次点击进行排序。',
 };
 
+export const PRIMARY_BASIS_RANK_HINT = {
+  en: 'Click a ranked item again to remove it from the ranking.',
+  zh: '再次点击已排序的选项可以取消该项的排序。',
+};
+
+export const PRIMARY_BASIS_OTHER_QUESTION = {
+  en: 'Anything else you considered? (optional)',
+  zh: '您是否还考虑了其他方面？（选填）',
+};
+
+/** Ranked in full; `primary_judgment_basis` stores the item ranked first. */
 export const PRIMARY_BASIS_OPTIONS = [
   {
     value: 'recipient_outcome',
     label: {
-      en: 'Mainly who ended up knowing my information',
-      zh: '主要考虑最终是谁知道了我的信息',
+      en: 'Who ended up knowing my information',
+      zh: '最终是谁知道了我的信息',
     },
   },
   {
     value: 'sharing_process',
     label: {
-      en: 'Mainly who passed the information on and through what process',
-      zh: '主要考虑信息是由谁、通过什么过程传播的',
+      en: 'Who passed the information on, and through what process',
+      zh: '信息是由谁、通过什么过程传播的',
     },
-  },
-  {
-    value: 'both',
-    label: { en: 'Both of the above are equally important', zh: '上述两方面同样重要' },
   },
   {
     value: 'information_sensitivity',
     label: {
-      en: 'Mainly whether the information itself is sensitive',
-      zh: '主要考虑信息本身是否敏感',
+      en: 'Whether the information itself is sensitive',
+      zh: '信息本身是否敏感',
     },
   },
-  { value: 'other', label: { en: 'Other', zh: '其他' } },
 ];
+
+export const PRIMARY_BASIS_VALUES = PRIMARY_BASIS_OPTIONS.map((o) => o.value);
 
 /**
  * Relationship levels used for every system-assigned relationship (A–C, A–D,

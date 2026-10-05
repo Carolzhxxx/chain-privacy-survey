@@ -36,6 +36,7 @@ const TARGET_TEXT = {
   B: { en: 'B', zh: 'B' },
   C: { en: 'C', zh: 'C' },
   D: { en: 'D', zh: 'D' },
+  BC: { en: 'B compared with C', zh: 'B 与 C 的比较' },
   CD: { en: 'C compared with D', zh: 'C 与 D 的比较' },
   info: { en: 'The information itself', zh: '这条信息本身' },
   overall: { en: 'The whole scenario', zh: '整个情境' },

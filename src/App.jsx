@@ -5,8 +5,9 @@ import ProgressBar from './components/survey/ProgressBar.jsx';
 import AssignedInfoScreen from './components/survey/screens/AssignedInfoScreen.jsx';
 import BaselineScreen from './components/survey/screens/BaselineScreen.jsx';
 import ChainIntroScreen from './components/survey/screens/ChainIntroScreen.jsx';
-import CompareCDScreen from './components/survey/screens/CompareCDScreen.jsx';
+import CompareScreen from './components/survey/screens/CompareScreen.jsx';
 import CompletionScreen from './components/survey/screens/CompletionScreen.jsx';
+import ComprehensionScreen from './components/survey/screens/ComprehensionScreen.jsx';
 import ConsentScreen from './components/survey/screens/ConsentScreen.jsx';
 import Hop1Screen from './components/survey/screens/Hop1Screen.jsx';
 import Hop2Screen from './components/survey/screens/Hop2Screen.jsx';
@@ -41,6 +42,7 @@ import {
   submitSession,
   updateRound,
 } from './lib/surveyStorage.js';
+import { recordComprehensionAttempt } from './lib/comprehension.js';
 import { validateScreen } from './lib/surveyValidation.js';
 import { useLanguage } from './i18n/LanguageContext.jsx';
 
@@ -187,8 +189,15 @@ function App() {
   }
 
   async function handleNext() {
-    const result = validateScreen(session, screenId);
+    let current = session;
+    if (screenId === 'comprehension') current = recordComprehensionAttempt(current);
+
+    const result = validateScreen(current, screenId);
     if (!result.ok) {
+      if (current !== session) {
+        setSession(current);
+        saveDraft(current);
+      }
       setErrors(result.errors);
       requestAnimationFrame(() => {
         document
@@ -203,7 +212,7 @@ function App() {
       if (session.submitted || submitting) return;
       setSubmitting(true);
 
-      const payload = { ...buildSubmissionPayload(session), survey_language: lang };
+      const payload = { ...buildSubmissionPayload(current), survey_language: lang };
       let response;
       try {
         response = await submitSession(payload);
@@ -225,7 +234,6 @@ function App() {
       return;
     }
 
-    let current = session;
     if (roundStep === 'info') {
       // Save the item text exactly as displayed (in the current language).
       const item = getInformationItem(itemId);
@@ -264,6 +272,9 @@ function App() {
       break;
     case 'chain_intro':
       screen = <ChainIntroScreen onBack={handleBack} onNext={handleNext} />;
+      break;
+    case 'comprehension':
+      screen = <ComprehensionScreen {...answerCommon} />;
       break;
     case 'baseline':
       screen = <BaselineScreen {...answerCommon} />;
@@ -349,18 +360,24 @@ function App() {
       );
       break;
     }
-    case 'cd_compare':
+    case 'bc_compare':
+    case 'cd_compare': {
+      const isBC = roundStep === 'bc_compare';
+      const field = isBC ? 'reason_b_c_difference_open' : 'reason_c_d_difference_open';
       screen = (
-        <CompareCDScreen
+        <CompareScreen
+          key={screenId}
           {...scenarioCommon}
-          ratingC={scenario?.hop2?.acceptability}
-          ratingD={scenario?.hop3?.acceptability}
-          value={scenario?.reason_c_d_difference_open}
-          onChange={(value) => updateScenarioField('reason_c_d_difference_open', value)}
-          error={errors.reason_c_d_difference_open}
+          pair={isBC ? 'BC' : 'CD'}
+          ratingEarlier={isBC ? scenario?.hop1?.acceptability : scenario?.hop2?.acceptability}
+          ratingLater={isBC ? scenario?.hop2?.acceptability : scenario?.hop3?.acceptability}
+          value={scenario?.[field]}
+          onChange={(value) => updateScenarioField(field, value)}
+          error={errors[field]}
         />
       );
       break;
+    }
     case 'judgment_factors':
     case 'judgment_basis':
       screen = (

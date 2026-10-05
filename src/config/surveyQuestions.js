@@ -48,6 +48,65 @@ export const ATTENTION_CHECK = {
   expected: 4,
 };
 
+/**
+ * Comprehension checks on the fixed scenario facts, asked after chain_intro.
+ * Wrong answers show `explanation` and must be corrected before continuing;
+ * the first attempt is kept for analysis.
+ */
+export const COMPREHENSION_QUESTIONS = [
+  {
+    id: 'permission',
+    text: {
+      en: 'In this scenario, did you allow B to tell this information to others?',
+      zh: '在这个情境中，您是否允许 B 把这条信息告诉别人？',
+    },
+    options: [
+      { value: 'allowed', label: { en: 'Yes, I allowed it', zh: '允许' } },
+      { value: 'not_allowed', label: { en: 'No, I did not explicitly allow it', zh: '没有明确允许' } },
+      { value: 'not_mentioned', label: { en: 'The scenario does not say', zh: '情境中没有提到' } },
+    ],
+    correct: 'not_allowed',
+    explanation: {
+      en: 'You told B the information but did not explicitly allow B to share it further.',
+      zh: '情境中，您告诉了 B 这条信息，但没有明确允许 B 继续分享。',
+    },
+  },
+  {
+    id: 'path',
+    text: {
+      en: 'From whom did C learn this information?',
+      zh: 'C 是从谁那里知道这条信息的？',
+    },
+    options: [
+      { value: 'from_a', label: { en: 'Directly from me', zh: '直接从我这里' } },
+      { value: 'from_b', label: { en: 'From B', zh: '从 B 那里' } },
+      { value: 'from_d', label: { en: 'From D', zh: '从 D 那里' } },
+    ],
+    correct: 'from_b',
+    explanation: {
+      en: 'C learned the information from B.',
+      zh: 'C 是从 B 那里知道这条信息的。',
+    },
+  },
+  {
+    id: 'prior',
+    text: {
+      en: 'Before B told C, did C already know this information?',
+      zh: '在 B 告诉 C 之前，C 是否已经知道这条信息？',
+    },
+    options: [
+      { value: 'knew', label: { en: 'Yes, C already knew', zh: '已经知道' } },
+      { value: 'did_not_know', label: { en: 'No, C did not know', zh: '不知道' } },
+      { value: 'not_mentioned', label: { en: 'The scenario does not say', zh: '情境中没有提到' } },
+    ],
+    correct: 'did_not_know',
+    explanation: {
+      en: 'C did not know about it before; C only learned it when B told them.',
+      zh: 'C 原本不知道这件事，是 B 告诉 C 之后才知道的。',
+    },
+  },
+];
+
 export const CONSENT_CONTENT = {
   eyebrow: { en: 'Study Information', zh: '研究说明' },
   title: { en: 'Consent and Study Information', zh: '知情同意与研究说明' },
