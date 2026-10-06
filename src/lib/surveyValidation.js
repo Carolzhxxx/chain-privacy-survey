@@ -3,10 +3,9 @@ import { COMPREHENSION_QUESTIONS } from '../config/surveyQuestions.js';
 import { comprehensionField, wrongComprehensionIds } from './comprehension.js';
 import { getRoundNumber, getRoundStep } from '../config/screens.js';
 import {
-  MAX_JUDGMENT_FACTORS,
+  JUDGMENT_FACTOR_RANK_VALUES,
   OPEN_TEXT_MAX_LENGTH,
   OPEN_TEXT_MIN_LENGTH,
-  PRIMARY_BASIS_VALUES,
 } from '../config/study.js';
 import { isValidRelationshipAssignment } from './relationshipAssignment.js';
 
@@ -34,14 +33,6 @@ const MSG = {
   openTooLong: {
     en: `Please keep your answer under ${OPEN_TEXT_MAX_LENGTH} characters.`,
     zh: `请将回答控制在 ${OPEN_TEXT_MAX_LENGTH} 字以内。`,
-  },
-  factorsCount: {
-    en: `Please select between 1 and ${MAX_JUDGMENT_FACTORS} factors.`,
-    zh: `请选择 1 至 ${MAX_JUDGMENT_FACTORS} 项。`,
-  },
-  otherMissing: {
-    en: 'Please briefly describe “Other”.',
-    zh: '请简要填写“其他”的内容。',
   },
   rankingIncomplete: {
     en: 'Please rank all of the options.',
@@ -180,25 +171,13 @@ export function validateScreen(session, screenId) {
         const error = openTextError(round[field]);
         if (error) errors[field] = error;
       } else if (step === 'judgment_factors') {
-        const factors = Array.isArray(round.judgment_factors)
-          ? round.judgment_factors
-          : [];
-        if (factors.length < 1 || factors.length > MAX_JUDGMENT_FACTORS) {
-          errors.judgment_factors = MSG.factorsCount;
-        }
-        if (factors.includes('other') && !isFilled(round.judgment_factors_other?.trim())) {
-          errors.judgment_factors_other = MSG.otherMissing;
-        }
+        const ranking = Array.isArray(round.judgment_factors) ? round.judgment_factors : [];
+        const complete =
+          ranking.length === JUDGMENT_FACTOR_RANK_VALUES.length &&
+          JUDGMENT_FACTOR_RANK_VALUES.every((value) => ranking.includes(value));
+        if (!complete) errors.judgment_factors = MSG.rankingIncomplete;
       } else if (step === 'realism') {
         requireLikert(round.scenario_realism, 'scenario_realism');
-      } else if (step === 'judgment_basis') {
-        const ranking = Array.isArray(round.judgment_basis_ranking)
-          ? round.judgment_basis_ranking
-          : [];
-        const complete =
-          ranking.length === PRIMARY_BASIS_VALUES.length &&
-          PRIMARY_BASIS_VALUES.every((value) => ranking.includes(value));
-        if (!complete) errors.judgment_basis_ranking = MSG.rankingIncomplete;
       }
       break;
     }

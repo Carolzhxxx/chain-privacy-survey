@@ -379,12 +379,10 @@ function App() {
       break;
     }
     case 'judgment_factors':
-    case 'judgment_basis':
       screen = (
         <JudgmentScreen
           key={screenId}
           {...scenarioCommon}
-          part={roundStep === 'judgment_factors' ? 'factors' : 'basis'}
           round={scenario}
           onChangeRound={updateScenarioField}
           errors={errors}

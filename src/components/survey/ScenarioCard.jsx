@@ -13,7 +13,7 @@ import { useRelationshipAssignment } from './RelationshipContext.js';
 const TEXT = {
   title: { en: 'Scenario', zh: '情境' },
   path: { en: 'Current path', zh: '当前传播路径' },
-  info: { en: 'Information about you', zh: '关于您的信息' },
+  info: { en: 'The information about you in this scenario', zh: '本情境中关于您的信息' },
   infoLater: { en: 'Shown on the next pages', zh: '将在后面的页面中呈现' },
   target: { en: 'You are now rating', zh: '当前评分对象' },
   relations: { en: 'Relationships', zh: '关系摘要' },
@@ -76,6 +76,15 @@ function ScenarioCard({ chain = ['A', 'B', 'C', 'D'], target = null, itemId = nu
 
   return (
     <section className="scenario-card" aria-label={t(TEXT.title)}>
+      {showInfo ? (
+        <div className="scenario-info-highlight">
+          <span className="scenario-info-label">{t(TEXT.info)}</span>
+          <strong className="scenario-info-text">
+            {item ? t(item) : t(TEXT.infoLater)}
+          </strong>
+        </div>
+      ) : null}
+
       <dl className="scenario-roles">
         {['A', 'B', 'C', 'D'].map((id) => (
           <div
@@ -107,12 +116,6 @@ function ScenarioCard({ chain = ['A', 'B', 'C', 'D'], target = null, itemId = nu
       <p className="scenario-narrative">{t(SCENARIO_NARRATIVE)}</p>
 
       <div className="scenario-meta">
-        {showInfo ? (
-          <p>
-            <span className="scenario-meta-label">{t(TEXT.info)}</span>
-            <strong>{item ? t(item) : t(TEXT.infoLater)}</strong>
-          </p>
-        ) : null}
         <div>
           <span className="scenario-meta-label">{t(TEXT.path)}</span>
           <HopDiagram

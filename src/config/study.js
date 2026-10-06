@@ -5,20 +5,22 @@
  */
 
 /**
- * "pilot": 1 scenario per participant.
- * "formal": 2 scenarios per participant, items from different categories,
- * presentation order randomized, same relationship structure.
+ * Label stored with every session ("pilot" | "formal"); both modes use the
+ * same design.
  */
 export const STUDY_MODE = 'pilot';
-// "pilot" | "formal"
 
 export const PILOT_MODE = STUDY_MODE === 'pilot';
 
-export const SCENARIOS_PER_PARTICIPANT = STUDY_MODE === 'pilot' ? 1 : 2;
+/**
+ * One scenario per information category (6): one item from each category,
+ * presentation order randomized, same relationship structure throughout.
+ */
+export const SCENARIOS_PER_PARTICIPANT = 6;
 
 /**
- * Open probes after the C and D ratings, the C–D comparison, judgment factors
- * and primary judgment basis (once per scenario). Kept in both modes until the
+ * Open probes after the C and D ratings, the B–C and C–D comparisons, and the
+ * judgment-factor ranking (once per scenario). Kept in both modes until the
  * pilot results decide; set to false to drop them without affecting the core
  * ratings.
  */
@@ -26,8 +28,6 @@ export const INCLUDE_REASONING_PROBES = true;
 
 export const OPEN_TEXT_MIN_LENGTH = 5;
 export const OPEN_TEXT_MAX_LENGTH = 500;
-export const MAX_JUDGMENT_FACTORS = 3;
-
 /**
  * Hypothetical information items: 6 categories × 3 items. `id` is stable and
  * shared by both languages; `category` is an INFO_TYPE_OPTIONS value and is
@@ -269,10 +269,21 @@ export const CD_DIFFERENCE_SUMMARY = {
 };
 
 export const JUDGMENT_FACTORS_QUESTION = {
-  en: 'Which of the following factors influenced the judgments you just made? Please select up to three.',
-  zh: '以下哪些因素影响了您刚才的判断？请选择最多三项。',
+  en: 'How much did each of the following factors influence the judgments you just made? Please rank all of them by clicking them in order, starting with the most influential.',
+  zh: '以下因素对您刚才的判断影响有多大？请从影响最大的开始，依次点击，为全部因素排序。',
 };
 
+export const RANK_HINT = {
+  en: 'Click a ranked item again to remove it from the ranking.',
+  zh: '再次点击已排序的选项可以取消该项的排序。',
+};
+
+export const JUDGMENT_FACTORS_OTHER_QUESTION = {
+  en: 'Was there anything else that influenced your judgments? (optional)',
+  zh: '是否还有其他影响您判断的因素？（选填）',
+};
+
+/** Ranked in full; `judgment_factors` stores the ranking, most influential first. */
 export const JUDGMENT_FACTOR_OPTIONS = [
   {
     value: 'information_sensitivity',
@@ -311,27 +322,17 @@ export const JUDGMENT_FACTOR_OPTIONS = [
     value: 'appropriateness_of_sharing',
     label: { en: 'Whether the act of sharing itself was appropriate', zh: '分享行为本身是否合适' },
   },
-  { value: 'other', label: { en: 'Other', zh: '其他' } },
 ];
 
-export const JUDGMENT_FACTOR_VALUES = JUDGMENT_FACTOR_OPTIONS.map((o) => o.value);
+export const JUDGMENT_FACTOR_RANK_VALUES = JUDGMENT_FACTOR_OPTIONS.map((o) => o.value);
 
-export const PRIMARY_BASIS_QUESTION = {
-  en: 'How important was each of the following for your judgments? Please rank them by clicking them in order, starting with the most important.',
-  zh: '以下几方面对您作出判断的重要程度如何？请从最重要的开始，依次点击进行排序。',
-};
+/** Export columns `factor_*`; `other` = 1 when the optional free text is filled. */
+export const JUDGMENT_FACTOR_VALUES = [...JUDGMENT_FACTOR_RANK_VALUES, 'other'];
 
-export const PRIMARY_BASIS_RANK_HINT = {
-  en: 'Click a ranked item again to remove it from the ranking.',
-  zh: '再次点击已排序的选项可以取消该项的排序。',
-};
-
-export const PRIMARY_BASIS_OTHER_QUESTION = {
-  en: 'Anything else you considered? (optional)',
-  zh: '您是否还考虑了其他方面？（选填）',
-};
-
-/** Ranked in full; `primary_judgment_basis` stores the item ranked first. */
+/**
+ * Primary judgment basis is no longer asked; its fields stay null. The values
+ * are kept for the export columns.
+ */
 export const PRIMARY_BASIS_OPTIONS = [
   {
     value: 'recipient_outcome',

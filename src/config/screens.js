@@ -19,7 +19,6 @@ export const ROUND_STEPS = [
   { step: 'hop3_reason', label: { en: 'Your reason (D)', zh: '评分理由（D）' }, probe: true },
   { step: 'cd_compare', label: { en: 'C vs. D', zh: 'C 与 D 比较' }, probe: true },
   { step: 'judgment_factors', label: { en: 'Factors', zh: '判断因素' }, probe: true },
-  { step: 'judgment_basis', label: { en: 'Main basis', zh: '主要判断依据' }, probe: true },
   { step: 'realism', label: { en: 'Realism', zh: '情境真实感' } },
 ];
 

@@ -24,7 +24,7 @@ import {
   isValidRelationshipAssignment,
 } from './relationshipAssignment.js';
 
-const SESSION_KEY = 'chain_privacy_survey_session_v6';
+const SESSION_KEY = 'chain_privacy_survey_session_v7';
 
 /**
  * Static demo build (e.g. GitHub Pages): no backend, assignment runs in the

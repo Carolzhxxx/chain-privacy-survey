@@ -15,8 +15,8 @@ const TEXT = {
     zh: '接下来，您会看到一条具体的、关于您的假想信息，并评价 B、C、D 分别知道这条信息时，您在多大程度上可以接受。',
   },
   planMulti: {
-    en: 'Next, you will see two different hypothetical pieces of information about you, one at a time. For each, you will rate how acceptable it is to you when B, C, and D each come to know it. The people and their relationships stay the same.',
-    zh: '接下来，您会依次看到两条不同的、关于您的假想信息。针对每一条，您将评价 B、C、D 分别知道这条信息时，您在多大程度上可以接受。两次情境中的人物和关系保持不变。',
+    en: `Next, you will see ${SCENARIOS_PER_PARTICIPANT} different hypothetical pieces of information about you, one at a time. For each, you will rate how acceptable it is to you when B, C, and D each come to know it. The people and their relationships stay the same in every scenario.`,
+    zh: `接下来，您会依次看到 ${SCENARIOS_PER_PARTICIPANT} 条不同的、关于您的假想信息。针对每一条，您将评价 B、C、D 分别知道这条信息时，您在多大程度上可以接受。所有情境中的人物和关系都保持不变。`,
   },
   card: {
     en: 'This summary stays at the top of each rating page.',

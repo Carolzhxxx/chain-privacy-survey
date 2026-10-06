@@ -5,8 +5,7 @@ Online questionnaire for multi-hop interpersonal privacy propagation
 are hypothetical people in **one** relationship scenario (described in natural
 language, `src/config/study.js`). The information is drawn from a pool of
 **18 hypothetical items** (6 categories × 3 items, `INFORMATION_ITEM_POOL`).
-Pilot participants get 1 item; formal participants get 2 items from different
-categories.
+Each participant gets 6 items, one from each category, as 6 scenarios.
 
 ## Stack
 
@@ -19,31 +18,27 @@ categories.
 In `src/config/study.js`:
 
 ```js
-export const STUDY_MODE = 'pilot';            // 'pilot' | 'formal'
-export const SCENARIOS_PER_PARTICIPANT = STUDY_MODE === 'pilot' ? 1 : 2;
-export const INCLUDE_REASONING_PROBES = true;  // open probes + factor / basis
+export const STUDY_MODE = 'pilot';            // label saved with the data
+export const SCENARIOS_PER_PARTICIPANT = 6;    // one item per category
+export const INCLUDE_REASONING_PROBES = true;  // open probes + factor ranking
 ```
 
-- `pilot`: 1 item per participant.
-- `formal`: 2 items from **different** categories, presented in a random
-  (participant-seeded) order. Both use the same B / C / D relationships; each
-  scenario gets its own sensitivity, AB / ABC / ABCD ratings, probes and realism.
-  Person pages (B / C / D) are asked once, after the first sensitivity rating.
-  Whether formal keeps the open probes is still open; toggle
-  `INCLUDE_REASONING_PROBES`.
-
-Changing `STUDY_MODE` invalidates in-progress tab sessions of the other mode.
+- 6 items, one from each category, presented in a random (participant-seeded)
+  order. All scenarios use the same B / C / D relationships; each scenario gets
+  its own sensitivity, AB / ABC / ABCD ratings, probes, factor ranking and
+  realism. Person pages (B / C / D) and the comprehension check are asked once,
+  after the first sensitivity rating. 74 screens in total with probes on.
+- `STUDY_MODE` is only a label; both modes use the same design.
 
 ## Item assignment (balanced randomized blocks)
 
 - A *block* contains all 18 items once, shuffled with a random block seed.
 - Blocks are appended to one queue; each new participant takes the next
   queued item(s). When the queue runs out, a new block is created.
-- Formal: the participant takes, in queue order, the first item whose
-  category differs from the one already taken. Skipped items stay at the
-  front of the queue for the next participant, so no item is lost and counts
-  stay balanced (e.g. 360 formal participants → every item exactly 40 times,
-  every category exactly 120 times).
+- The participant takes, in queue order, items whose category differs from
+  those already taken until all 6 categories are covered. Skipped items stay at
+  the front of the queue for the next participant, so no item is lost and
+  counts stay balanced (every 3 participants use one full 18-item block).
 - An item is never given twice to the same participant; categories are never
   shown to participants.
 - The assignment is locked: `POST /api/assign-items` returns the saved
@@ -69,8 +64,8 @@ participants never choose them (`RELATIONSHIP_FACTORS` / `RELATION_LEVELS` in
   (`src/lib/relationshipAssignment.js`). Factor levels are equally frequent,
   factors are independent of each other and of the information item; the
   3⁵ = 243 combinations (`relationship_structure_id`) are not balanced cell by cell.
-- One structure per participant; in formal mode both scenarios share it and
-  only the item changes.
+- One structure per participant; all 6 scenarios share it and only the item
+  changes.
 - `knows_ab` / `knows_ac` / `knows_ad` / `knows_bc` / `knows_cd` = condition
   `!== "stranger"`, set automatically. Closeness `r_ab` / `r_ac` / `r_ad` (1–7)
   is asked only when A knows the person (`null` for `stranger`); trust in B is
@@ -115,24 +110,25 @@ npm run dev:full
    C–D). If A knows the person, A rates closeness (`r_ab` / `r_ac` / `r_ad`),
    otherwise it is not asked and stays `null`. The B page also asks trust in B  
 4. B knows (`acceptability_ab`) → C knows (`acceptability_abc`) → *reason for C*
-   → D knows (`acceptability_abcd`) → *reason for D* → *C vs. D comparison* →
-   *judgment factors (max 3)* → *primary judgment basis*  
-5. Scenario realism (`scenario_realism`) → submit (formal: steps 2, 4, 5
-   repeat for the second item, then submit)  
+   → *B vs. C comparison* → D knows (`acceptability_abcd`) → *reason for D* → *C vs. D comparison* →
+   *judgment factors (rank all 7)*  
+5. Scenario realism (`scenario_realism`); steps 2, 4, 5 repeat for the other 5
+   items, then submit  
 
 Steps in *italics* are reasoning probes. They only exist while
 `INCLUDE_REASONING_PROBES = true` in `src/config/study.js`; set it to `false`
 to drop them from the flow without affecting the core ratings. All open probes come before
-the closed factor / basis questions, which are asked once per scenario.
+the closed factor ranking, which is asked once per scenario. The primary
+judgment basis page was removed; its fields stay empty / `null`.
 
 Pilot conditions are fixed, not randomized: B had no explicit permission to
 share further (`permission_condition = "not_authorized"`), and C and D did not
 know the information before (`c_prior_knowledge = d_prior_knowledge = false`).
 The scenario text states this explicitly (`SCENARIO_NARRATIVE`).
 
-A scenario summary card (roles, a relationship summary — You–B, You–C,
+A scenario summary card (the information item, highlighted at the top; roles, a relationship summary — You–B, You–C,
 You–D, B–C, C–D, full description on hover / tap — the narrative,
-the information item, current path with the relationship labelled on each
+current path with the relationship labelled on each
 arrow, current rating target) sits at the top of
 every rating page.
 
@@ -150,16 +146,15 @@ items carry no preset sensitivity label.
 
 ## Modeling fields
 
-Long CSV has **3 rows per scenario** (one per hop; 3 per pilot participant,
-6 per formal participant), with `scenario_index` and `study_mode`:
+Long CSV has **3 rows per scenario** (one per hop; 18 per participant), with `scenario_index` and `study_mode`:
 
 - `info_type` (categorical)  
 - `sensitivity_raw` / `sensitivity_norm` where norm = `(raw − 1) / 6`  
 - `hop`, `acceptability`  
 - `relationship_owner_recipient_raw` / `_norm` (R_AB / R_AC / R_AD)  
 
-Scenario CSV (`/api/export/scenarios.csv`) has **1 row per scenario** (1 per
-pilot participant, 2 per formal participant), one variable per column:
+Scenario CSV (`/api/export/scenarios.csv`) has **1 row per scenario** (6 per
+participant), one variable per column:
 `participant_id`, `scenario_id`, `scenario_index` (draw slot),
 `scenario_order` (presentation position), `information_category`,
 `information_item_id`, `information_item_text`, `survey_language`,
@@ -170,10 +165,11 @@ pilot participant, 2 per formal participant), one variable per column:
 `owner_c/owner_d/bc/cd_relation_seed`, `relationship_assignment_method`, `knows_ab/ac/ad`, `r_ab/ac/ad/bc/cd` (+ `r_bc_unsure`, `r_cd_unsure`),
 `permission_condition`, `c_prior_knowledge`, `d_prior_knowledge`,
 `acceptability_ab/abc/abcd`, the four open reasons (C, D, B vs. C, C vs. D),
-`judgment_factors` (JSON list) plus one-hot `factor_*` columns,
-`judgment_factors_other`, `judgment_basis_ranking` (JSON list, most important
-first) plus `basis_rank_*` (1–3), `primary_judgment_basis` (= ranked first),
-`primary_judgment_basis_other` (optional), `scenario_realism`, and start/end time per
+`judgment_factors` (JSON list, most influential first) plus `factor_rank_*`
+(1–7) and `factor_*` (`factor_other` = 1 when the optional
+`judgment_factors_other` text is filled), the removed basis columns
+(`judgment_basis_ranking`, `basis_rank_*`, `primary_judgment_basis`,
+`primary_judgment_basis_other`; empty / `null`), `scenario_realism`, and start/end time per
 scenario screen.
 
 Wide and long CSV carry the same relationship-assignment columns; long CSV

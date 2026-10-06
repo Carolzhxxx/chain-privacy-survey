@@ -30,6 +30,7 @@ const { exportLongCsv, exportScenarioCsv, exportWideCsv } = await import(
 );
 const {
   buildScenarioAssignments,
+  CATEGORY_COUNT,
   createEmptyAssignmentState,
   drawItems,
 } = await import(assignmentModulePath);
@@ -173,7 +174,7 @@ app.get('/api/health', (_request, response) => {
 app.post('/api/assign-items', (request, response) => {
   const body = request.body ?? {};
   const participantId = body.participant_id;
-  const n = body.n === 2 ? 2 : 1;
+  const n = Number.isInteger(body.n) && body.n >= 1 && body.n <= CATEGORY_COUNT ? body.n : 1;
   const studyMode = body.study_mode === 'formal' ? 'formal' : 'pilot';
   if (!participantId) {
     response.status(400).json({ error: 'participant_id required' });

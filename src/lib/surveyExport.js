@@ -4,6 +4,7 @@
  */
 
 import {
+  JUDGMENT_FACTOR_RANK_VALUES,
   JUDGMENT_FACTOR_VALUES,
   PRIMARY_BASIS_VALUES,
   RELATIONSHIP_FACTORS,
@@ -233,6 +234,7 @@ const SCENARIO_COLUMNS = [
   'judgment_factors',
   'judgment_factors_count',
   ...JUDGMENT_FACTOR_VALUES.map((v) => `factor_${v}`),
+  ...JUDGMENT_FACTOR_RANK_VALUES.map((v) => `factor_rank_${v}`),
   'judgment_factors_other',
   'judgment_basis_ranking',
   ...PRIMARY_BASIS_VALUES.map((v) => `basis_rank_${v}`),
@@ -496,7 +498,18 @@ export function toScenarioRows(session) {
       judgment_factors: factors,
       judgment_factors_count: factors.length,
       ...Object.fromEntries(
-        JUDGMENT_FACTOR_VALUES.map((v) => [`factor_${v}`, factors.includes(v) ? 1 : 0]),
+        JUDGMENT_FACTOR_VALUES.map((v) => [
+          `factor_${v}`,
+          (v === 'other' ? Boolean(round.judgment_factors_other?.trim()) : factors.includes(v))
+            ? 1
+            : 0,
+        ]),
+      ),
+      ...Object.fromEntries(
+        JUDGMENT_FACTOR_RANK_VALUES.map((v) => [
+          `factor_rank_${v}`,
+          factors.includes(v) ? factors.indexOf(v) + 1 : null,
+        ]),
       ),
       judgment_factors_other: round.judgment_factors_other ?? null,
       judgment_basis_ranking: basisRanking,

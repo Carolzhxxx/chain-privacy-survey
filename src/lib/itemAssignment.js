@@ -67,7 +67,7 @@ const CATEGORY_BY_ID = Object.fromEntries(
   INFORMATION_ITEM_POOL.map((item) => [item.id, item.category]),
 );
 
-const CATEGORY_COUNT = new Set(Object.values(CATEGORY_BY_ID)).size;
+export const CATEGORY_COUNT = new Set(Object.values(CATEGORY_BY_ID)).size;
 
 /**
  * Take `n` items with distinct categories from the queue.
