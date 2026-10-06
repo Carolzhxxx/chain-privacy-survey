@@ -238,7 +238,7 @@ Formal 模式下，第 4–5 页和第 10–19 页对第二条信息重复一次
 
 | 题目 | 选项 | 正确答案 |
 |---|---|---|
-| 在这个情境中，您是否允许 B 把这条信息告诉别人？/ In this scenario, did you allow B to tell this information to others? | 允许 / 没有明确允许 / 情境中没有提到 | 没有明确允许（`not_allowed`） |
+| 在这个情境中，您是否允许 B 把这条信息告诉别人？/ In this scenario, did you allow B to tell this information to others? | 允许 / 不允许 / 没有明确说 | 没有明确说（`not_explicit`）：情境中 A 既没有允许也没有禁止 B 继续分享 |
 | C 是从谁那里知道这条信息的？/ From whom did C learn this information? | 直接从我这里 / 从 B 那里 / 从 D 那里 | 从 B 那里（`from_b`） |
 | 在 B 告诉 C 之前，C 是否已经知道这条信息？/ Before B told C, did C already know this information? | 已经知道 / 不知道 / 情境中没有提到 | 不知道（`did_not_know`） |
 

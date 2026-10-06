@@ -61,14 +61,14 @@ export const COMPREHENSION_QUESTIONS = [
       zh: '在这个情境中，您是否允许 B 把这条信息告诉别人？',
     },
     options: [
-      { value: 'allowed', label: { en: 'Yes, I allowed it', zh: '允许' } },
-      { value: 'not_allowed', label: { en: 'No, I did not explicitly allow it', zh: '没有明确允许' } },
-      { value: 'not_mentioned', label: { en: 'The scenario does not say', zh: '情境中没有提到' } },
+      { value: 'allowed', label: { en: 'I allowed it', zh: '允许' } },
+      { value: 'not_allowed', label: { en: 'I did not allow it', zh: '不允许' } },
+      { value: 'not_explicit', label: { en: 'I did not say either way', zh: '没有明确说' } },
     ],
-    correct: 'not_allowed',
+    correct: 'not_explicit',
     explanation: {
-      en: 'You told B the information but did not explicitly allow B to share it further.',
-      zh: '情境中，您告诉了 B 这条信息，但没有明确允许 B 继续分享。',
+      en: 'You told B the information but did not explicitly say whether B could share it further.',
+      zh: '情境中，您告诉了 B 这条信息，但没有明确说是否允许 B 继续分享。',
     },
   },
   {
