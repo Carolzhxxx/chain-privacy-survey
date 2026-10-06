@@ -192,7 +192,8 @@ the items are not a validated IUIPC version. The attention check is excluded
 from it and exported separately as `attention_check_passed` (selected 4).
 Age and gender are demographic controls.
 
-A comprehension-check page follows `chain_intro` (questions in
+A comprehension-check page follows the Person D page, right before the first
+rating (questions in
 `COMPREHENSION_QUESTIONS`, `src/config/surveyQuestions.js`): did A allow B to
 share, whom C heard it from, and whether C already knew. Wrong answers show an
 explanation and must be corrected before continuing. Exports keep the first

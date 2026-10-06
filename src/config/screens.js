@@ -3,7 +3,8 @@ import { INCLUDE_REASONING_PROBES, SCENARIOS_PER_PARTICIPANT } from './study.js'
 /**
  * One block of screens per scenario (r1_*, r2_*, … in presentation order).
  * The B / C / D relationship pages come once, after the first scenario's
- * sensitivity rating; every scenario uses the same relationship structure.
+ * sensitivity rating, followed by the comprehension check (also once, before
+ * the first rating); every scenario uses the same relationship structure.
  */
 
 /** Scenario steps in display order. `probe` steps are hidden when INCLUDE_REASONING_PROBES is off. */
@@ -26,6 +27,7 @@ const PERSON_SCREENS = [
   { id: 'person_b', label: { en: 'Person B', zh: '人物 B' } },
   { id: 'person_c', label: { en: 'Person C', zh: '人物 C' } },
   { id: 'person_d', label: { en: 'Person D', zh: '人物 D' } },
+  { id: 'comprehension', label: { en: 'Comprehension check', zh: '理解检查' } },
 ];
 
 function scenarioScreens(n) {
@@ -50,7 +52,6 @@ export const SCREENS = [
   { id: 'consent', label: { en: 'Consent', zh: '知情同意' } },
   { id: 'baseline', label: { en: 'Privacy attitudes', zh: '一般隐私倾向' } },
   { id: 'chain_intro', label: { en: 'Background and roles', zh: '实验背景与角色' } },
-  { id: 'comprehension', label: { en: 'Comprehension check', zh: '理解检查' } },
   ...Array.from({ length: SCENARIOS_PER_PARTICIPANT }, (_, i) => scenarioScreens(i + 1)).flat(),
   { id: 'completion', label: { en: 'Done', zh: '完成' } },
 ].map((screen, index) => ({ ...screen, index }));
