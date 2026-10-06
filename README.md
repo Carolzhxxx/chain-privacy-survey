@@ -126,10 +126,9 @@ share further (`permission_condition = "not_authorized"`), and C and D did not
 know the information before (`c_prior_knowledge = d_prior_knowledge = false`).
 The scenario text states this explicitly (`SCENARIO_NARRATIVE`).
 
-A scenario summary card (the information item, highlighted at the top; roles, a relationship summary — You–B, You–C,
-You–D, B–C, C–D, full description on hover / tap — the narrative,
-current path with the relationship labelled on each
-arrow, current rating target) sits at the top of
+A scenario summary card (the information item, highlighted at the top; roles, the narrative, the full A→B→C→D path with all five relationships
+labelled — arrows for A–B / B–C / C–D, dashed brackets for A–C / A–D, full
+description on hover / tap, people not yet reached faded, current rating target) sits at the top of
 every rating page.
 
 Fields kept for compatibility but no longer shown (always `null`): per-hop

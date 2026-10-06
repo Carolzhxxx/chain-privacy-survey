@@ -7,7 +7,6 @@ import {
 } from '../../config/study.js';
 import { useLanguage } from '../../i18n/LanguageContext.jsx';
 import HopDiagram from './HopDiagram.jsx';
-import RelationTerm from './RelationTerm.jsx';
 import { useRelationshipAssignment } from './RelationshipContext.js';
 
 const TEXT = {
@@ -16,7 +15,6 @@ const TEXT = {
   info: { en: 'The information about you in this scenario', zh: '本情境中关于您的信息' },
   infoLater: { en: 'Shown on the next pages', zh: '将在后面的页面中呈现' },
   target: { en: 'You are now rating', zh: '当前评分对象' },
-  relations: { en: 'Relationships', zh: '关系摘要' },
   relationLoading: { en: 'Loading…', zh: '加载中……' },
   relationsHint: {
     en: 'Hover over (or tap) a relationship to see its description.',
@@ -24,13 +22,7 @@ const TEXT = {
   },
 };
 
-const RELATION_ROW_LABELS = {
-  ab: { en: 'You and B', zh: '您与B' },
-  ac: { en: 'You and C', zh: '您与C' },
-  ad: { en: 'You and D', zh: '您与D' },
-  bc: { en: 'B and C', zh: 'B与C' },
-  cd: { en: 'C and D', zh: 'C与D' },
-};
+const FULL_CHAIN = ['A', 'B', 'C', 'D'];
 
 const TARGET_TEXT = {
   B: { en: 'B', zh: 'B' },
@@ -99,32 +91,20 @@ function ScenarioCard({ chain = ['A', 'B', 'C', 'D'], target = null, itemId = nu
         ))}
       </dl>
 
-      <div className="scenario-relations-block">
-        <dl className="scenario-relations" aria-label={t(TEXT.relations)}>
-          {Object.entries(relations).map(([key, relation]) => (
-            <div key={key} style={{ display: 'contents' }}>
-              <dt>{t(RELATION_ROW_LABELS[key])}</dt>
-              <dd>
-                <RelationTerm label={relation.label} description={relation.description} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <p className="scenario-relations-hint">{t(TEXT.relationsHint)}</p>
-      </div>
-
       <p className="scenario-narrative">{t(SCENARIO_NARRATIVE)}</p>
 
       <div className="scenario-meta">
         <div>
           <span className="scenario-meta-label">{t(TEXT.path)}</span>
           <HopDiagram
-            chain={chain}
+            chain={FULL_CHAIN}
+            reached={chain.length}
             highlight={highlight}
             compact
             edgeLabels={{ AB: relations.ab, BC: relations.bc, CD: relations.cd }}
             linkLabels={{ AC: relations.ac, AD: relations.ad }}
           />
+          <p className="scenario-relations-hint">{t(TEXT.relationsHint)}</p>
         </div>
         {target ? (
           <p>

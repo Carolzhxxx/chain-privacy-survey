@@ -20,12 +20,15 @@ const LINK_LEGEND = {
  *   compact?: boolean,
  *   edgeLabels?: Record<string, { label: string, description?: { en: string, zh: string } }>,
  *   linkLabels?: Record<string, { label: string, description?: { en: string, zh: string } }>,
+ *   reached?: number,
  * }} props `edgeLabels` is keyed by sender + recipient along the chain, e.g. "AB";
  *   `linkLabels` holds non-adjacent relationships drawn as dashed brackets
- *   below the chain, keyed "AC" / "AD".
+ *   below the chain, keyed "AC" / "AD". People at chain index >= `reached`
+ *   (not yet told) are drawn faded.
  */
-function HopDiagram({ chain, highlight, compact = false, edgeLabels = {}, linkLabels = {} }) {
+function HopDiagram({ chain, highlight, compact = false, edgeLabels = {}, linkLabels = {}, reached = chain.length }) {
   const { t } = useLanguage();
+  const future = (index) => (index >= reached ? 'future' : '');
 
   // Grid columns alternate node / edge, so node at chain index i sits in column 2i+1.
   const links = Object.entries(linkLabels)
@@ -50,7 +53,7 @@ function HopDiagram({ chain, highlight, compact = false, edgeLabels = {}, linkLa
           return (
             <div key={id} style={{ display: 'contents' }}>
               {index > 0 ? (
-                <span className="hop-edge" style={{ gridRow: 1, gridColumn: 2 * index }}>
+                <span className={`hop-edge ${future(index)}`} style={{ gridRow: 1, gridColumn: 2 * index }}>
                   {edge ? (
                     <span className="hop-edge-label">
                       <RelationTerm label={edge.label} description={edge.description} align="center" />
@@ -62,7 +65,7 @@ function HopDiagram({ chain, highlight, compact = false, edgeLabels = {}, linkLa
                 </span>
               ) : null}
               <div
-                className={`hop-node ${highlight === id ? 'active' : ''}`}
+                className={`hop-node ${highlight === id ? 'active' : ''} ${future(index)}`}
                 style={{ gridRow: 1, gridColumn: 2 * index + 1 }}
                 aria-current={highlight === id ? 'true' : undefined}
               >
@@ -75,7 +78,7 @@ function HopDiagram({ chain, highlight, compact = false, edgeLabels = {}, linkLa
         {links.map(({ pair, link, from, to }, depth) => (
           <span
             key={pair}
-            className="hop-link"
+            className={`hop-link ${future(to)}`}
             style={{ gridRow: `2 / ${3 + depth}`, gridColumn: `${2 * from + 1} / ${2 * to + 2}` }}
           >
             <span className="hop-link-label">

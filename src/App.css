@@ -808,20 +808,7 @@ h2 {
   background: white;
 }
 
-.scenario-relations-block {
-  display: grid;
-  gap: 0.35rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 6px;
-  background: white;
-}
 
-.scenario-relations {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.25rem 0.75rem;
-  margin: 0;
-}
 
 .person-relations {
   display: grid;
@@ -840,8 +827,8 @@ h2 {
   font-weight: 600;
 }
 
-.scenario-relations-hint {
-  margin: 0;
+.scenario-card .scenario-relations-hint {
+  margin: 0.35rem 0 0;
   color: var(--muted);
   font-size: 0.8rem;
 }
@@ -946,16 +933,7 @@ h2 {
   font-size: 0.78rem;
 }
 
-.scenario-relations dt {
-  color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
 
-.scenario-relations dd {
-  margin: 0;
-  font-weight: 600;
-}
 
 .assigned-item-text {
   margin: 0.45rem 0 0;
@@ -1147,4 +1125,10 @@ h2 {
   .compact-likert-anchors {
     font-size: 0.75rem;
   }
+}
+
+.hop-node.future,
+.hop-edge.future,
+.hop-link.future {
+  opacity: 0.45;
 }
