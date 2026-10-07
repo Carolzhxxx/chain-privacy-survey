@@ -132,7 +132,7 @@ export const CONSENT_CONTENT = {
     {
       id: 'investigator',
       label: { en: 'Principal investigator', zh: '主持研究员' },
-      value: { en: 'Shuning Zhang', zh: '张书宁' },
+      value: { en: 'Hanxiang Zeng', zh: '曾涵湘' },
       variant: 'investigator',
     },
   ],
@@ -216,7 +216,7 @@ export const CONSENT_CONTENT = {
         en: 'If you have any questions about the study or want to request deletion of your response data, please contact:',
         zh: '如果您对本研究有任何问题，或希望请求删除您的回答数据，请联系：',
       },
-      email: 'zsn23@mails.tsinghua.edu.cn',
+      email: 'hxz63@uw.edu',
     },
   ],
   confirmationHeading: { en: 'Consent confirmation', zh: '同意确认' },
