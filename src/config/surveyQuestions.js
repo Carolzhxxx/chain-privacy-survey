@@ -123,13 +123,16 @@ export const CONSENT_CONTENT = {
     {
       id: 'institution',
       label: { en: 'Research institution', zh: '研究机构' },
-      value: { en: 'Research Team', zh: '研究团队' },
+      value: {
+        en: 'Institute for Network Sciences and Cyberspace, Tsinghua University',
+        zh: '清华大学网络科学与网络空间研究院',
+      },
       variant: 'institution',
     },
     {
-      id: 'type',
-      label: { en: 'Study type', zh: '研究形式' },
-      value: { en: 'Anonymous online questionnaire', zh: '匿名在线问卷' },
+      id: 'investigator',
+      label: { en: 'Principal investigator', zh: '主持研究员' },
+      value: { en: 'Shuning Zhang', zh: '张书宁' },
       variant: 'investigator',
     },
   ],
@@ -138,16 +141,16 @@ export const CONSENT_CONTENT = {
       id: 'content',
       heading: { en: 'Study content', zh: '研究内容' },
       body: {
-        en: 'This study examines how people evaluate the sharing of personal information across social relationships.',
-        zh: '本研究旨在了解人们如何看待个人信息在社会关系中的分享。',
+        en: 'This anonymous online questionnaire examines how people evaluate the sharing of personal information across social relationships.',
+        zh: '本研究为匿名在线问卷，旨在了解人们如何看待个人信息在社会关系中的分享。',
       },
     },
     {
       id: 'procedure',
       heading: { en: 'What you will do', zh: '您需要做什么' },
       body: {
-        en: 'You will read hypothetical scenarios about information spreading. In these scenarios, you are A, the owner of the information, and B, C, and D are people in the scenario. Based on the given relationships and information, you will rate how acceptable it is to you when the information about you becomes known to different people. You do not need to give your real name or disclose any specific private information from your real life.',
-        zh: '您将阅读若干假想的信息传播情境。在这些情境中，您是信息所有者A，B、C和D是情境中的人物。您需要根据给定的人物关系和信息内容，评价当关于您的信息被不同人物知道时，您对此的可接受程度。您不需要填写真实姓名，也不需要披露自己现实生活中的具体隐私信息。',
+        en: 'You will read hypothetical scenarios about information spreading. In these scenarios, you are A, the owner of the information, and B, C, and D are people in the scenario. Based on the given relationships and information, you will rate how acceptable it is to you when the information about you becomes known to different people. You do not need to give your real name or disclose any specific private information from your real life. The survey takes about 35–45 minutes.',
+        zh: '您将阅读若干假想的信息传播情境。在这些情境中，您是信息所有者A，B、C和D是情境中的人物。您需要根据给定的人物关系和信息内容，评价当关于您的信息被不同人物知道时，您对此的可接受程度。您不需要填写真实姓名，也不需要披露自己现实生活中的具体隐私信息。问卷预计需要约 35–45 分钟。',
       },
     },
     {
@@ -167,12 +170,53 @@ export const CONSENT_CONTENT = {
       },
     },
     {
+      id: 'questions',
+      heading: { en: 'Right to ask questions', zh: '提问的权利' },
+      body: {
+        en: 'You may ask the researchers any questions about this study at any time. You do not need to give a reason for asking or for not continuing.',
+        zh: '您可以随时向研究人员询问与本研究有关的任何问题。您无需说明提问或不继续参与的理由。',
+      },
+    },
+    {
       id: 'data',
       heading: { en: 'Data use', zh: '数据使用' },
       body: {
         en: 'Your anonymous ratings will be stored for research analysis. We do not ask for your name. An anonymous participant ID is generated automatically.',
         zh: '您的匿名评分将被保存用于研究分析。我们不会询问您的姓名，系统会自动生成一个匿名参与者编号。',
       },
+    },
+    {
+      id: 'deletion',
+      heading: { en: 'Right to delete your data', zh: '删除数据的权利' },
+      body: {
+        en: 'If you decide after submitting that you want your data removed, you may contact the researcher and request deletion of your response data. Please include the anonymous participant ID shown on the final page, so the researcher can identify and remove your data.',
+        zh: '如果您在提交后希望删除自己的数据，可以联系研究人员并请求删除您的回答数据。请提供问卷最后一页显示的匿名参与者编号，以便研究人员识别并删除您的数据。',
+      },
+    },
+    {
+      id: 'benefits',
+      heading: { en: 'Potential benefits', zh: '潜在益处' },
+      body: {
+        en: 'Participating may not bring you direct personal benefits. However, your answers may help researchers better understand how people perceive privacy when information spreads across social relationships.',
+        zh: '参与本研究可能不会给您带来直接的个人收益。但您的回答可能有助于研究人员更好地理解人们如何看待信息在社会关系中传播时的隐私问题。',
+      },
+    },
+    {
+      id: 'risks',
+      heading: { en: 'Potential risks or discomfort', zh: '潜在风险或不适' },
+      body: {
+        en: 'The risks of this study are minimal. Some scenarios involve sensitive topics such as health, finances, intimate relationships, location, or contact information. You may feel mild discomfort when thinking about these situations. You may stop the survey at any time if you feel uncomfortable.',
+        zh: '本研究的风险较低。部分情境涉及健康、财务、亲密关系、地理位置或联系方式等敏感话题，在思考这些情境时您可能会感到轻微不适。如有不适，您可以随时停止问卷。',
+      },
+    },
+    {
+      id: 'contact',
+      heading: { en: 'Contact', zh: '联系方式' },
+      body: {
+        en: 'If you have any questions about the study or want to request deletion of your response data, please contact:',
+        zh: '如果您对本研究有任何问题，或希望请求删除您的回答数据，请联系：',
+      },
+      email: 'zsn23@mails.tsinghua.edu.cn',
     },
   ],
   confirmationHeading: { en: 'Consent confirmation', zh: '同意确认' },

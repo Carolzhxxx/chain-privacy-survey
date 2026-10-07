@@ -36,6 +36,11 @@ function ConsentScreen({ answers, onChange, onNext, errors }) {
           <div key={section.id} className="consent-section">
             <h2 className="consent-heading">{t(section.heading)}</h2>
             <p className="consent-text">{t(section.body)}</p>
+            {section.email ? (
+              <p className="consent-text">
+                <a href={`mailto:${section.email}`}>{section.email}</a>
+              </p>
+            ) : null}
           </div>
         ))}
 
