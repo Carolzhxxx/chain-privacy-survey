@@ -37,10 +37,12 @@ const {
 const {
   buildRelationshipAssignment,
   createEmptyRelationshipState,
-  drawRelationshipStructure,
   isValidRelationshipAssignment,
 } = await import(
   pathToFileURL(path.join(projectRoot, 'src', 'lib', 'relationshipAssignment.js')).href
+);
+const { countAssignments, pickBalancedItems, pickBalancedRelationship } = await import(
+  pathToFileURL(path.join(projectRoot, 'src', 'lib', 'balancedAssignment.js')).href
 );
 
 function readRelationshipState() {
@@ -54,16 +56,32 @@ function readRelationshipState() {
   }
 }
 
-function writeRelationshipState(state) {
-  fs.writeFileSync(relationshipStatePath, `${JSON.stringify(state, null, 2)}\n`);
+const randomBelow = (max) => crypto.randomInt(0, max);
+
+/** Every stored assignment with its session (if any), for balancing. */
+function currentCounts() {
+  const entries = fs
+    .readdirSync(participantAssignDir)
+    .filter((name) => name.endsWith('.json'))
+    .map((name) => {
+      try {
+        const assignment = JSON.parse(fs.readFileSync(path.join(participantAssignDir, name), 'utf8'));
+        const file = sessionPath(assignment.participant_id ?? name.replace(/\.json$/, ''));
+        const session = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
+        return { assignment, session };
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+  return countAssignments(entries, Date.now());
 }
 
-function assignRelationship() {
-  const { picks, state } = drawRelationshipStructure(readRelationshipState(), () =>
-    crypto.randomInt(0, 0xffffffff),
+function assignBalancedRelationship() {
+  return buildRelationshipAssignment(
+    pickBalancedRelationship(currentCounts(), randomBelow),
+    'server_completion_balanced',
   );
-  writeRelationshipState(state);
-  return buildRelationshipAssignment(picks, 'server_block');
 }
 
 function sessionPath(participantId) {
@@ -165,10 +183,9 @@ app.get('/api/health', (_request, response) => {
 });
 
 /**
- * Balanced assignment of the participant's information items (randomized
- * 18-item blocks, src/lib/itemAssignment.js) and, from separate queues, their
- * relationship structure (A–B, A–C, A–D, B–C, C–D, each balanced in randomized
- * blocks of 3, src/lib/relationshipAssignment.js). Stored once and returned unchanged on
+ * Completion-balanced assignment (src/lib/balancedAssignment.js) of the
+ * participant's information items (one per category) and relationship
+ * structure (A–B, A–C, A–D, B–C, C–D). Stored once and returned unchanged on
  * repeat requests (refresh, back navigation).
  */
 app.post('/api/assign-items', (request, response) => {
@@ -188,23 +205,30 @@ app.post('/api/assign-items', (request, response) => {
       return;
     }
     // Assigned before relationship structures existed: keep the items, add a structure.
-    const updated = { ...existing, relationship: assignRelationship() };
+    const updated = { ...existing, relationship: assignBalancedRelationship() };
     writeParticipantAssignment(participantId, updated);
     response.json({ ok: true, ...updated, reused: true });
     return;
   }
 
-  const { picks, state } = drawItems(readAssignmentState(), n, () =>
-    crypto.randomInt(0, 0xffffffff),
-  );
-  writeAssignmentState(state);
+  let scenarios;
+  if (n === CATEGORY_COUNT) {
+    const picks = pickBalancedItems(currentCounts(), randomBelow);
+    scenarios = buildScenarioAssignments(picks, participantId, 'server_completion_balanced');
+  } else {
+    const { picks, state } = drawItems(readAssignmentState(), n, () =>
+      crypto.randomInt(0, 0xffffffff),
+    );
+    writeAssignmentState(state);
+    scenarios = buildScenarioAssignments(picks, participantId, 'server_block');
+  }
 
   const payload = {
     ok: true,
     participant_id: participantId,
     study_mode: studyMode,
-    scenarios: buildScenarioAssignments(picks, participantId, 'server_block'),
-    relationship: assignRelationship(),
+    scenarios,
+    relationship: assignBalancedRelationship(),
     assigned_at: new Date().toISOString(),
   };
   writeParticipantAssignment(participantId, payload);
@@ -252,6 +276,7 @@ app.get('/api/assignment-counts', (request, response) => {
     relationship_structures: relationshipStructures,
     state: readAssignmentState(),
     relationship_state: readRelationshipState(),
+    balancing_counts: currentCounts(),
   });
 });
 

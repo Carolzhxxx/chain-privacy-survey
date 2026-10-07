@@ -77,6 +77,8 @@ function App() {
     let cancelled = false;
 
     async function ensureAssignment() {
+      // Assign only after consent, so people who leave at the consent page take no slot.
+      if (session.currentScreen === 'consent') return;
       if (isAssignmentComplete(session)) return;
       if (assigning) return;
       setAssigning(true);

@@ -30,6 +30,17 @@ export const INCLUDE_REASONING_PROBES = true;  // open probes + factor ranking
   after the first sensitivity rating. 74 screens in total with probes on.
 - `STUDY_MODE` is only a label; both modes use the same design.
 
+## Assignment on the server (completion-balanced)
+
+The server (`src/lib/balancedAssignment.js`) assigns after the consent page.
+For each relationship factor it gives the level held by the fewest counted
+participants, and for each category the item held by the fewest (ties at
+random). Counted: completed sessions plus unfinished ones with page activity in
+the last 20 minutes; older unfinished sessions count as dropouts, so their slots
+are refilled. Method label: `server_completion_balanced`. The randomized-block
+queues below are still used by the demo build (and were used for the first two
+participants).
+
 ## Item assignment (balanced randomized blocks)
 
 - A *block* contains all 18 items once, shuffled with a random block seed.
