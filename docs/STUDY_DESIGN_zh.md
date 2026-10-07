@@ -183,7 +183,7 @@
 开启追问时共 74 个页面（固定页 8 个 + 每个情境 11 页 × 6），页面顶部有进度条。以下按第一个情境列出。每页答完才能进入下一页，被试可以返回上一页修改。
 
 1. **知情同意（consent）**：研究说明，以及两项必选勾选（见第 8 节）。
-2. **一般隐私倾向（baseline）**：年龄、性别、3 道一般隐私态度题、3 道 DTVP 题和 1 道注意力检查题。
+2. **一般隐私倾向（baseline）**：年龄、性别、3 道 DTVP 隐私倾向题和 1 道注意力检查题。
 3. **实验背景与角色（chain_intro）**：角色说明、情境摘要卡（不含信息条目），以及流程说明：“接下来，您会依次看到 6 条不同的、关于您的假想信息。针对每一条，您将评价 B、C、D 分别知道这条信息时，您在多大程度上可以接受。所有情境中的人物和关系都保持不变。”
 4. **信息内容（info）**：引导语和分配到的信息条目。
 5. **信息敏感度（sensitivity）**。
@@ -220,9 +220,9 @@
 
 | 变量 | 题目（中文 / English） |
 |---|---|
-| `privacy_control` | 总体来说，我希望能掌控谁可以获得关于我的信息。/ Generally, I prefer to have control over who receives information about me. |
-| `permission_preference` | 总体来说，我希望别人在把关于我的信息告诉他人之前，先征求我的同意。/ Generally, I expect people to ask before sharing information about me with others. |
-| `sharing_comfort`（反向计分） | 总体来说，关于我的信息从我最初告诉的那个人那里继续传开，我能够接受。/ Generally, I am comfortable with information about me spreading beyond the person I originally told. |
+| ~~`privacy_control`~~（已停用） | 总体来说，我希望能掌控谁可以获得关于我的信息。/ Generally, I prefer to have control over who receives information about me. |
+| ~~`permission_preference`~~（已停用） | 总体来说，我希望别人在把关于我的信息告诉他人之前，先征求我的同意。/ Generally, I expect people to ask before sharing information about me with others. |
+| ~~`sharing_comfort`~~（已停用，原为反向计分） | 总体来说，关于我的信息从我最初告诉的那个人那里继续传开，我能够接受。/ Generally, I am comfortable with information about me spreading beyond the person I originally told. |
 | `dtvp_1` | 与其他人相比，我对别人如何对待我的个人信息更加敏感。/ Compared to others, I am more sensitive about the way other people handle my personal information. |
 | `dtvp_2` | 对我来说，保护自己的隐私是最重要的事情。/ To me, it is the most important thing to keep my privacy. |
 | `dtvp_3` | 与其他人相比，我更容易担心自己的个人隐私受到威胁。/ Compared to others, I tend to be more concerned about threats to my personal privacy. |
@@ -230,8 +230,8 @@
 
 由这一组题派生的变量（在导出时计算）：
 
-- `general_privacy_concern`：三题均值，其中 `sharing_comfort` 按 8 − x 反向计分。注意力检查题不计入。由于这三题不是经过验证的 IUIPC 版本，代码特意没有把它称为 IUIPC。
-- `dtvp_mean`：DTVP 三题均值（无反向题），作为“一般隐私倾向”（个人基础隐私水平）的主要协变量。
+- 前三道自编题（`privacy_control`、`permission_preference`、`sharing_comfort`）因缺少文献支持已停用，不再呈现；字段保留，本轮为 null，`general_privacy_concern`（原三题均值）也因此为 null。
+- `dtvp_mean`：DTVP 三题均值（无反向题），作为“一般隐私倾向”（个人基础隐私水平）的协变量。
 - `attention_check_passed`：选择 4 即为通过。
 
 `dtvp_1`–`dtvp_3` 改编自隐私价值倾向量表（Disposition to Value Privacy, DTVP；Xu, Dinev, Smith & Hart, 2011, *Journal of the Association for Information Systems*, 12(12)），原题针对“在线公司”和“在线隐私”，这里改为“别人”和“隐私”以适应人际场景。原量表无正式中文版，中文为研究者翻译，**【待完成】**回译；分析时应在本研究数据中报告信度（Cronbach's α 或 ω）。引用前请核对原文题目措辞。
@@ -452,7 +452,7 @@ B–C、C–D 两对关系的亲密度**本轮不询问**（`r_bc` / `r_cd` 恒�
 ## 9. 建议的分析方向【建议，非问卷已实现功能】
 
 1. **主要模型**：以长表为基础，以 `acceptability`（1–7）为因变量，拟合混合效应模型（linear mixed model 或有序 cumulative link mixed model, CLMM）：
-   - 固定效应：`hop`（被试内）、A 与接收者的关系条件、路径关系条件（B–C、C–D）、`sensitivity`（被试内中心化或标准化）、`dtvp_mean`（及 / 或 `general_privacy_concern`）；
+   - 固定效应：`hop`（被试内）、A 与接收者的关系条件、路径关系条件（B–C、C–D）、`sensitivity`（被试内中心化或标准化）、`dtvp_mean`；
    - 随机效应：被试随机截距，信息条目（`information_item_id`）随机截距；
    - 年龄和性别作为控制变量。
 2. **主效应与交互**：

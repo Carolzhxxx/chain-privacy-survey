@@ -181,13 +181,13 @@ A–B condition).
 knowing someone but rating them 1. Derive any network-closeness variable at
 analysis time, e.g. `knows_ac === false ? 0 : (r_ac − 1) / 6`.
 
-`general_privacy_concern` = mean of the 3 baseline privacy items
-(`sharing_comfort` reverse-coded as 8 − x). It is not labelled IUIPC because
-the items are not a validated IUIPC version. The attention check is excluded
-from it and exported separately as `attention_check_passed` (selected 4).
+The 3 self-written baseline items (`privacy_control`, `permission_preference`,
+`sharing_comfort`) are no longer shown; their fields and
+`general_privacy_concern` (their mean) stay `null`. The attention check is
+exported as `attention_check_passed` (selected 4).
 `dtvp_1`–`dtvp_3` are the Disposition to Value Privacy items (Xu, Dinev, Smith
 & Hart, 2011, JAIS), adapted from "online companies" to "other people";
-`dtvp_mean` is their mean (no reverse items) and is the main baseline privacy
+`dtvp_mean` is their mean (no reverse items) and is the baseline privacy
 covariate. Age and gender are demographic controls.
 
 A comprehension-check page follows the Person D page, right before the first

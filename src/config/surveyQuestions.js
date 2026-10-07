@@ -10,6 +10,10 @@ export const LIKERT_AGREE = {
   7: { en: 'Strongly agree', zh: '非常同意' },
 };
 
+/**
+ * Self-written items, no longer shown (replaced by DTVP_QUESTIONS). Fields
+ * stay null; kept for the export columns and `general_privacy_concern`.
+ */
 export const BASELINE_QUESTIONS = [
   {
     id: 'privacy_control',
