@@ -143,6 +143,13 @@ Categories (6 × 3 items; codes are internal only): `identity_contact`,
 `beliefs_preferences`. Sensitivity comes only from the participant's rating;
 items carry no preset sensitivity label.
 
+## Prolific
+
+Prolific opens the study URL with `?PROLIFIC_PID=…&STUDY_ID=…&SESSION_ID=…`.
+These are read when the session starts and saved as `prolific_pid`,
+`prolific_study_id`, `prolific_session_id` (in drafts, submissions and all
+three CSV exports, right after `participant_id`); `null` without parameters.
+
 ## Modeling fields
 
 Long CSV has **3 rows per scenario** (one per hop; 18 per participant), with `scenario_index` and `study_mode`:

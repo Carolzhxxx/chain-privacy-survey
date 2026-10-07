@@ -164,10 +164,29 @@ export function createEmptyAnswers() {
   };
 }
 
+/** Prolific appends PROLIFIC_PID, STUDY_ID and SESSION_ID to the study URL. */
+function readProlificParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    prolific_pid: params.get('PROLIFIC_PID') || null,
+    prolific_study_id: params.get('STUDY_ID') || null,
+    prolific_session_id: params.get('SESSION_ID') || null,
+  };
+}
+
+function prolificFields(session) {
+  return {
+    prolific_pid: session.prolific_pid ?? null,
+    prolific_study_id: session.prolific_study_id ?? null,
+    prolific_session_id: session.prolific_session_id ?? null,
+  };
+}
+
 export function createSession() {
   const created_at = nowIso();
   return {
     participant_id: crypto.randomUUID(),
+    ...readProlificParams(),
     status: 'in_progress',
     created_at,
     completed_at: null,
@@ -205,6 +224,9 @@ function withDefaults(session) {
     relationship_assignment: session.relationship_assignment ?? null,
     study_mode: session.study_mode ?? STUDY_MODE,
     pilot_mode: session.pilot_mode ?? PILOT_MODE,
+    prolific_pid: session.prolific_pid ?? readProlificParams().prolific_pid,
+    prolific_study_id: session.prolific_study_id ?? readProlificParams().prolific_study_id,
+    prolific_session_id: session.prolific_session_id ?? readProlificParams().prolific_session_id,
   };
 }
 
@@ -332,6 +354,7 @@ export function buildSubmissionPayload(session) {
 
   return {
     participant_id: session.participant_id,
+    ...prolificFields(session),
     status: 'completed',
     created_at: session.created_at,
     completed_at,
@@ -393,6 +416,7 @@ export async function saveDraft(session) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participant_id: session.participant_id,
+        ...prolificFields(session),
         status: 'in_progress',
         created_at: session.created_at,
         completed_at: null,

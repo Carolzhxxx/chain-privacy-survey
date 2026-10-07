@@ -55,6 +55,9 @@ const RELATIONSHIP_ASSIGNMENT_COLUMNS = [
 
 const WIDE_COLUMNS = [
   'participant_id',
+  'prolific_pid',
+  'prolific_study_id',
+  'prolific_session_id',
   'status',
   'created_at',
   'completed_at',
@@ -133,6 +136,9 @@ const WIDE_COLUMNS = [
 
 const LONG_COLUMNS = [
   'participant_id',
+  'prolific_pid',
+  'prolific_study_id',
+  'prolific_session_id',
   'round',
   'round_order',
   'scenario_index',
@@ -228,6 +234,9 @@ const ROUND_TIMING_STEPS = [
  */
 const SCENARIO_COLUMNS = [
   'participant_id',
+  'prolific_pid',
+  'prolific_study_id',
+  'prolific_session_id',
   'scenario_id',
   'scenario_index',
   'scenario_order',
@@ -364,6 +373,9 @@ export function toLongRows(session) {
 
   const shared = {
     participant_id: flat.participant_id,
+    prolific_pid: flat.prolific_pid ?? null,
+    prolific_study_id: flat.prolific_study_id ?? null,
+    prolific_session_id: flat.prolific_session_id ?? null,
     B_relationship_type: flat.B_relationship_type,
     C_relationship_type_owner: flat.C_relationship_type_owner,
     D_relationship_type_owner: flat.D_relationship_type_owner,
@@ -505,6 +517,9 @@ export function toScenarioRows(session) {
 
     return {
       participant_id: flat.participant_id,
+      prolific_pid: flat.prolific_pid ?? null,
+      prolific_study_id: flat.prolific_study_id ?? null,
+      prolific_session_id: flat.prolific_session_id ?? null,
       scenario_id: `${flat.scenario_vignette_id ?? 'scenario'}-${round.information_item_id ?? `r${round.round_id}`}`,
       scenario_index: round.scenario_index ?? round.round_id,
       scenario_order: round.round_id,
