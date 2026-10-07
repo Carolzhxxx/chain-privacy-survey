@@ -1,4 +1,11 @@
+import { useEffect } from 'react';
+import {
+  PROLIFIC_COMPLETION_CODE,
+  PROLIFIC_COMPLETION_URL,
+} from '../../../config/study.js';
 import { useLanguage } from '../../../i18n/LanguageContext.jsx';
+
+const PROLIFIC_REDIRECT_DELAY_MS = 5000;
 
 const TEXT = {
   eyebrow: { en: 'Done', zh: '完成' },
@@ -19,6 +26,12 @@ const TEXT = {
   uploadStatus: { en: 'Upload status: ', zh: '上传状态：' },
   download: { en: 'Download this response (JSON)', zh: '下载本次回答（JSON）' },
   restart: { en: 'Start the demo again', zh: '重新开始演示' },
+  completionCode: { en: 'Prolific completion code: ', zh: 'Prolific 完成码：' },
+  redirecting: {
+    en: 'You will be returned to Prolific automatically in a few seconds. If nothing happens, click the button below or enter the completion code on Prolific.',
+    zh: '几秒后将自动返回 Prolific。如果没有跳转，请点击下面的按钮，或在 Prolific 中输入完成码。',
+  },
+  returnToProlific: { en: 'Return to Prolific', zh: '返回 Prolific' },
 };
 
 function downloadJson(filename, data) {
@@ -36,6 +49,15 @@ function downloadJson(filename, data) {
 function CompletionScreen({ participantId, submitResult, demoMode, session, onRestart }) {
   const { t } = useLanguage();
   const failed = submitResult?.ok === false;
+  const fromProlific = !demoMode && Boolean(session?.prolific_pid);
+
+  useEffect(() => {
+    if (!fromProlific) return undefined;
+    const timer = window.setTimeout(() => {
+      window.location.assign(PROLIFIC_COMPLETION_URL);
+    }, PROLIFIC_REDIRECT_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [fromProlific]);
 
   return (
     <section className="survey-card completion-card">
@@ -48,6 +70,18 @@ function CompletionScreen({ participantId, submitResult, demoMode, session, onRe
         {t(TEXT.participantId)}
         {participantId}
       </p>
+      {fromProlific ? (
+        <>
+          <p className="meta">
+            {t(TEXT.completionCode)}
+            <strong>{PROLIFIC_COMPLETION_CODE}</strong>
+          </p>
+          <p className="lead">{t(TEXT.redirecting)}</p>
+          <a className="primary-button" href={PROLIFIC_COMPLETION_URL}>
+            {t(TEXT.returnToProlific)}
+          </a>
+        </>
+      ) : null}
       {!demoMode && failed && submitResult?.status ? (
         <p className="meta">
           {t(TEXT.uploadStatus)}

@@ -278,6 +278,13 @@ h2 {
     background 160ms ease;
 }
 
+a.primary-button {
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+}
+
 .primary-button:hover {
   background: #315a77;
   transform: translateY(-1px);

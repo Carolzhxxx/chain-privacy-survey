@@ -12,6 +12,11 @@ export const STUDY_MODE = 'pilot';
 
 export const PILOT_MODE = STUDY_MODE === 'pilot';
 
+/** Must match the completion code set for the study on Prolific. */
+export const PROLIFIC_COMPLETION_CODE = 'CHAINP26';
+
+export const PROLIFIC_COMPLETION_URL = `https://app.prolific.com/submissions/complete?cc=${PROLIFIC_COMPLETION_CODE}`;
+
 /**
  * One scenario per information category (6): one item from each category,
  * presentation order randomized, same relationship structure throughout.

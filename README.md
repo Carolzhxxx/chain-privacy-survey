@@ -150,6 +150,11 @@ These are read when the session starts and saved as `prolific_pid`,
 `prolific_study_id`, `prolific_session_id` (in drafts, submissions and all
 three CSV exports, right after `participant_id`); `null` without parameters.
 
+When `prolific_pid` is present, the completion page shows the completion code
+(`PROLIFIC_COMPLETION_CODE` in `src/config/study.js`, currently `CHAINP26`) and
+redirects to `https://app.prolific.com/submissions/complete?cc=…` after 5 s.
+The code must match the one set for the study on Prolific.
+
 ## Modeling fields
 
 Long CSV has **3 rows per scenario** (one per hop; 18 per participant), with `scenario_index` and `study_mode`:
