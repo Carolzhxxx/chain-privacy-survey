@@ -185,10 +185,12 @@ The 3 self-written baseline items (`privacy_control`, `permission_preference`,
 `sharing_comfort`) are no longer shown; their fields and
 `general_privacy_concern` (their mean) stay `null`. The attention check is
 exported as `attention_check_passed` (selected 4).
-`dtvp_1`–`dtvp_3` are the Disposition to Value Privacy items (Xu, Dinev, Smith
-& Hart, 2011, JAIS), adapted from "online companies" to "other people";
-`dtvp_mean` is their mean (no reverse items) and is the baseline privacy
-covariate. Age and gender are demographic controls.
+`privacy_need_1`–`privacy_need_4` are the informational need-for-privacy items
+of the Need for Privacy Scale (Frener, Dombrowski & Trepte, 2024; Chinese
+version Wang, Cheng & Zhu, 2024), 5-point agreement; `privacy_need_mean` is
+their mean (no reverse items) and is the baseline privacy covariate. The
+briefly added DTVP items (`dtvp_1`–`dtvp_3`, `dtvp_mean`) are hidden and stay
+`null`. Age and gender are demographic controls.
 
 A comprehension-check page follows the Person D page, right before the first
 rating (questions in

@@ -13,12 +13,13 @@ import {
   ATTENTION_CHECK,
   BASELINE_QUESTIONS,
   DTVP_QUESTIONS,
+  PRIVACY_NEED_QUESTIONS,
 } from '../config/surveyQuestions.js';
 import { COMPREHENSION_COLUMNS, comprehensionExportFields } from './comprehension.js';
 import { normalizeLikert } from './likertScale.js';
 
 /**
- * Mean of Likert items (1–7), reverse-coded items as 8 − x. Null if any item
+ * Mean of 7-point Likert items, reverse-coded items as 8 − x. Null if any item
  * is missing.
  */
 function meanScore(session, questions) {
@@ -68,6 +69,11 @@ const WIDE_COLUMNS = [
   'permission_preference',
   'sharing_comfort',
   'general_privacy_concern',
+  'privacy_need_1',
+  'privacy_need_2',
+  'privacy_need_3',
+  'privacy_need_4',
+  'privacy_need_mean',
   'dtvp_1',
   'dtvp_2',
   'dtvp_3',
@@ -158,6 +164,11 @@ const LONG_COLUMNS = [
   'permission_preference',
   'sharing_comfort',
   'general_privacy_concern',
+  'privacy_need_1',
+  'privacy_need_2',
+  'privacy_need_3',
+  'privacy_need_4',
+  'privacy_need_mean',
   'dtvp_1',
   'dtvp_2',
   'dtvp_3',
@@ -262,6 +273,7 @@ const SCENARIO_COLUMNS = [
   'gender',
   'gender_self_describe',
   'general_privacy_concern',
+  'privacy_need_mean',
   'dtvp_mean',
   'attention_check_passed',
   ...COMPREHENSION_COLUMNS,
@@ -300,6 +312,7 @@ function flattenSession(session) {
   return {
     ...session,
     general_privacy_concern: generalPrivacyConcern(session),
+    privacy_need_mean: meanScore(session, PRIVACY_NEED_QUESTIONS),
     dtvp_mean: meanScore(session, DTVP_QUESTIONS),
     attention_check_passed: attentionCheckPassed(session),
     ...comprehensionExportFields(session),
@@ -359,6 +372,11 @@ export function toLongRows(session) {
     permission_preference: flat.permission_preference,
     sharing_comfort: flat.sharing_comfort,
     general_privacy_concern: flat.general_privacy_concern,
+    privacy_need_1: flat.privacy_need_1,
+    privacy_need_2: flat.privacy_need_2,
+    privacy_need_3: flat.privacy_need_3,
+    privacy_need_4: flat.privacy_need_4,
+    privacy_need_mean: flat.privacy_need_mean,
     dtvp_1: flat.dtvp_1,
     dtvp_2: flat.dtvp_2,
     dtvp_3: flat.dtvp_3,
@@ -549,6 +567,7 @@ export function toScenarioRows(session) {
       gender: flat.gender ?? null,
       gender_self_describe: flat.gender_self_describe ?? null,
       general_privacy_concern: flat.general_privacy_concern,
+      privacy_need_mean: flat.privacy_need_mean,
       dtvp_mean: flat.dtvp_mean,
       attention_check_passed: flat.attention_check_passed,
       ...Object.fromEntries(COMPREHENSION_COLUMNS.map((c) => [c, flat[c]])),

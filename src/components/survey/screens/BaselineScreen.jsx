@@ -5,7 +5,8 @@ import {
 } from '../../../config/options.js';
 import {
   ATTENTION_CHECK,
-  DTVP_QUESTIONS,
+  PRIVACY_NEED_INTRO,
+  PRIVACY_NEED_QUESTIONS,
 } from '../../../config/surveyQuestions.js';
 import { useLanguage } from '../../../i18n/LanguageContext.jsx';
 import LikertScale from '../LikertScale.jsx';
@@ -88,7 +89,8 @@ function BaselineScreen({ answers, onChange, onBack, onNext, errors }) {
           </>
         ) : null}
 
-        {DTVP_QUESTIONS.map((q) => (
+        <p className="question-text">{t(PRIVACY_NEED_INTRO)}</p>
+        {PRIVACY_NEED_QUESTIONS.map((q) => (
           <LikertScale
             key={q.id}
             question={q.text}

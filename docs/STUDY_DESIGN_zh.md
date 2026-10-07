@@ -183,7 +183,7 @@
 开启追问时共 74 个页面（固定页 8 个 + 每个情境 11 页 × 6），页面顶部有进度条。以下按第一个情境列出。每页答完才能进入下一页，被试可以返回上一页修改。
 
 1. **知情同意（consent）**：研究说明，以及两项必选勾选（见第 8 节）。
-2. **一般隐私倾向（baseline）**：年龄、性别、3 道 DTVP 隐私倾向题和 1 道注意力检查题。
+2. **信息隐私需求（baseline）**：年龄、性别、4 道信息隐私需求题（NFP-S）和 1 道注意力检查题。
 3. **实验背景与角色（chain_intro）**：角色说明、情境摘要卡（不含信息条目），以及流程说明：“接下来，您会依次看到 6 条不同的、关于您的假想信息。针对每一条，您将评价 B、C、D 分别知道这条信息时，您在多大程度上可以接受。所有情境中的人物和关系都保持不变。”
 4. **信息内容（info）**：引导语和分配到的信息条目。
 5. **信息敏感度（sensitivity）**。
@@ -214,27 +214,37 @@
 
 除特别说明外，所有量表均为 **1–7 点**。评分页使用紧凑量表，只标注 1、4、7 三个锚点；基线页的每个点都有文字标签。
 
-### 6.1 一般隐私倾向（基线，第 2 页，每人一次）
+### 6.1 信息隐私需求（基线，第 2 页，每人一次）
 
-这一组题使用 7 点同意度量表：1 非常不同意、2 不同意、3 有点不同意、4 中立、5 有点同意、6 同意、7 非常同意。
+采用 Need for Privacy Scale（NFP-S）中“信息隐私需求”（informational need for privacy）维度的 4 道题，测量被试跨情境、相对稳定的隐私需求（个人基础隐私水平 \(Q_i\)）。
+
+- 出处：Frener, R., Dombrowski, J., & Trepte, S. (2024). Development and Validation of the Need for Privacy Scale (NFP-S). *Communication Methods and Measures*, 18(1), 48–71.
+- 中文版验证：Wang, H., Cheng, M., & Zhu, W. (2024). Psychometric properties of the Chinese version of the Need for Privacy Scale. *Digital Health*, 10（N = 1,020；附录 Table A1 列出中英文题目）。
+- 作为稳定个人差异 / 调节变量的应用示例：Wang, F., & Wang, X. (2025). *Frontiers in Psychology*.
+- 论文写法建议：Participants' baseline informational privacy need was measured using four items adapted from the informational privacy dimension of the Need for Privacy Scale (Frener et al., 2024), which has subsequently been validated in a Chinese sample (Wang et al., 2024).
+
+题前说明：“请根据您通常的想法，评价您对以下陈述的同意程度。这里询问的是您平时的一般倾向，而不是某一条具体信息。”
+
+量表沿用中文版的 5 点同意度：1 完全不同意、2 比较不同意、3 既不同意也不反对、4 比较同意、5 完全同意。
 
 | 变量 | 题目（中文 / English） |
 |---|---|
-| ~~`privacy_control`~~（已停用） | 总体来说，我希望能掌控谁可以获得关于我的信息。/ Generally, I prefer to have control over who receives information about me. |
-| ~~`permission_preference`~~（已停用） | 总体来说，我希望别人在把关于我的信息告诉他人之前，先征求我的同意。/ Generally, I expect people to ask before sharing information about me with others. |
-| ~~`sharing_comfort`~~（已停用，原为反向计分） | 总体来说，关于我的信息从我最初告诉的那个人那里继续传开，我能够接受。/ Generally, I am comfortable with information about me spreading beyond the person I originally told. |
-| `dtvp_1` | 与其他人相比，我对别人如何对待我的个人信息更加敏感。/ Compared to others, I am more sensitive about the way other people handle my personal information. |
-| `dtvp_2` | 对我来说，保护自己的隐私是最重要的事情。/ To me, it is the most important thing to keep my privacy. |
-| `dtvp_3` | 与其他人相比，我更容易担心自己的个人隐私受到威胁。/ Compared to others, I tend to be more concerned about threats to my personal privacy. |
-| `attention_check` | 为确认您在认真作答，请选择 4。/ To show that you are paying attention, please select 4. |
+| `privacy_need_1` | 一般来说，我希望别人少了解一些关于我的事情。/ In general, I would like others to know less about me. |
+| `privacy_need_2` | 通常，我倾向于不让太多人了解我。/ Usually, I prefer not to let too many people get to know me. |
+| `privacy_need_3` | 我不希望自己的个人资料被公开或被无关的人随意获取。/ I do not want my personal data to be made public or freely accessed by unrelated people. |
+| `privacy_need_4` | 我认为并非每个人都有必要了解关于我的一切。/ I think not everyone needs to know everything about me. |
+| `attention_check` | 为确认您在认真作答，请选择 4。/ To show that you are paying attention, please select 4.（7 点量表） |
 
-由这一组题派生的变量（在导出时计算）：
+中文为对 NFP-S 信息隐私维度的情境化表述；英文目前是中文的回译，**【待核对】**正式使用前应替换为 Wang et al. (2024) Table A1 / Frener et al. (2024) 中的原英文题目。
 
-- 前三道自编题（`privacy_control`、`permission_preference`、`sharing_comfort`）因缺少文献支持已停用，不再呈现；字段保留，本轮为 null，`general_privacy_concern`（原三题均值）也因此为 null。
-- `dtvp_mean`：DTVP 三题均值（无反向题），作为“一般隐私倾向”（个人基础隐私水平）的协变量。
+派生变量（导出时计算）：
+
+- `privacy_need_mean`：四题均值（均为正向计分），即 \(Q_i = (q_{i1}+q_{i2}+q_{i3}+q_{i4})/4\)，越高表示基础信息隐私需求越强。分析时应报告本研究数据中的 Cronbach's α 或 McDonald's ω。
 - `attention_check_passed`：选择 4 即为通过。
 
-`dtvp_1`–`dtvp_3` 改编自隐私价值倾向量表（Disposition to Value Privacy, DTVP；Xu, Dinev, Smith & Hart, 2011, *Journal of the Association for Information Systems*, 12(12)），原题针对“在线公司”和“在线隐私”，这里改为“别人”和“隐私”以适应人际场景。原量表无正式中文版，中文为研究者翻译，**【待完成】**回译；分析时应在本研究数据中报告信度（Cronbach's α 或 ω）。引用前请核对原文题目措辞。
+`privacy_need_mean` 与每个情境中针对具体信息的 `information_sensitivity` 是两个不同的变量，不要合并。
+
+已停用、字段保留为 null 的旧题：三道自编题 `privacy_control`、`permission_preference`、`sharing_comfort`（及其均值 `general_privacy_concern`），以及曾短暂加入的 DTVP 三题 `dtvp_1`–`dtvp_3`（及 `dtvp_mean`）。
 
 ### 6.2 理解检查（第 9 页，人物 D 之后、首次评分之前，每人一次）
 
@@ -452,7 +462,7 @@ B–C、C–D 两对关系的亲密度**本轮不询问**（`r_bc` / `r_cd` 恒�
 ## 9. 建议的分析方向【建议，非问卷已实现功能】
 
 1. **主要模型**：以长表为基础，以 `acceptability`（1–7）为因变量，拟合混合效应模型（linear mixed model 或有序 cumulative link mixed model, CLMM）：
-   - 固定效应：`hop`（被试内）、A 与接收者的关系条件、路径关系条件（B–C、C–D）、`sensitivity`（被试内中心化或标准化）、`dtvp_mean`；
+   - 固定效应：`hop`（被试内）、A 与接收者的关系条件、路径关系条件（B–C、C–D）、`sensitivity`（被试内中心化或标准化）、`privacy_need_mean`；
    - 随机效应：被试随机截距，信息条目（`information_item_id`）随机截距；
    - 年龄和性别作为控制变量。
 2. **主效应与交互**：

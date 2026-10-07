@@ -1,5 +1,5 @@
 import { DEMOGRAPHICS_ENABLED } from '../config/options.js';
-import { COMPREHENSION_QUESTIONS } from '../config/surveyQuestions.js';
+import { COMPREHENSION_QUESTIONS, PRIVACY_NEED_QUESTIONS } from '../config/surveyQuestions.js';
 import { comprehensionField, wrongComprehensionIds } from './comprehension.js';
 import { getRoundNumber, getRoundStep } from '../config/screens.js';
 import {
@@ -97,9 +97,11 @@ export function validateScreen(session, screenId) {
           errors.gender_self_describe = MSG.selfDescribe;
         }
       }
-      requireLikert(answers.dtvp_1, 'dtvp_1');
-      requireLikert(answers.dtvp_2, 'dtvp_2');
-      requireLikert(answers.dtvp_3, 'dtvp_3');
+      for (const q of PRIVACY_NEED_QUESTIONS) {
+        if (!(Number.isInteger(answers[q.id]) && q.labels[answers[q.id]])) {
+          errors[q.id] = MSG.required;
+        }
+      }
       requireLikert(answers.attention_check, 'attention_check');
       break;
 

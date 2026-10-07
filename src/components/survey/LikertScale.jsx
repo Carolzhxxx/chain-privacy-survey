@@ -8,7 +8,7 @@ function LikertScale({ question, labels, value, onChange, error }) {
     <div className="likert-block">
       <p className="question-text">{questionText}</p>
       <div className="likert-options" role="radiogroup" aria-label={questionText}>
-        {[1, 2, 3, 4, 5, 6, 7].map((score) => (
+        {Object.keys(labels).map(Number).map((score) => (
           <button
             key={score}
             type="button"

@@ -42,9 +42,63 @@ export const BASELINE_QUESTIONS = [
   },
 ];
 
+/** Five-point agreement scale of the Chinese NFP-S (Wang, Cheng & Zhu, 2024). */
+export const LIKERT_AGREE_5 = {
+  1: { en: 'Strongly disagree', zh: '完全不同意' },
+  2: { en: 'Somewhat disagree', zh: '比较不同意' },
+  3: { en: 'Neither agree nor disagree', zh: '既不同意也不反对' },
+  4: { en: 'Somewhat agree', zh: '比较同意' },
+  5: { en: 'Strongly agree', zh: '完全同意' },
+};
+
+export const PRIVACY_NEED_INTRO = {
+  en: 'Please rate how much you agree with each statement, based on how you usually think. These questions are about your general tendency, not about any specific piece of information.',
+  zh: '请根据您通常的想法，评价您对以下陈述的同意程度。这里询问的是您平时的一般倾向，而不是某一条具体信息。',
+};
+
 /**
- * Disposition to Value Privacy (Xu, Dinev, Smith & Hart, 2011, JAIS), 3 items,
- * adapted from online companies to other people.
+ * Informational need for privacy, 4 items, from the Need for Privacy Scale
+ * (Frener, Dombrowski & Trepte, 2024; Chinese version: Wang, Cheng & Zhu, 2024).
+ * All positively keyed.
+ */
+export const PRIVACY_NEED_QUESTIONS = [
+  {
+    id: 'privacy_need_1',
+    text: {
+      en: 'In general, I would like others to know less about me.',
+      zh: '一般来说，我希望别人少了解一些关于我的事情。',
+    },
+    labels: LIKERT_AGREE_5,
+  },
+  {
+    id: 'privacy_need_2',
+    text: {
+      en: 'Usually, I prefer not to let too many people get to know me.',
+      zh: '通常，我倾向于不让太多人了解我。',
+    },
+    labels: LIKERT_AGREE_5,
+  },
+  {
+    id: 'privacy_need_3',
+    text: {
+      en: 'I do not want my personal data to be made public or freely accessed by unrelated people.',
+      zh: '我不希望自己的个人资料被公开或被无关的人随意获取。',
+    },
+    labels: LIKERT_AGREE_5,
+  },
+  {
+    id: 'privacy_need_4',
+    text: {
+      en: 'I think not everyone needs to know everything about me.',
+      zh: '我认为并非每个人都有必要了解关于我的一切。',
+    },
+    labels: LIKERT_AGREE_5,
+  },
+];
+
+/**
+ * Disposition to Value Privacy (Xu, Dinev, Smith & Hart, 2011, JAIS), adapted.
+ * No longer shown (replaced by PRIVACY_NEED_QUESTIONS); fields stay null.
  */
 export const DTVP_QUESTIONS = [
   {
