@@ -221,7 +221,7 @@
 - 出处：Frener, R., Dombrowski, J., & Trepte, S. (2024). Development and Validation of the Need for Privacy Scale (NFP-S). *Communication Methods and Measures*, 18(1), 48–71.
 - 中文版验证：Wang, H., Cheng, M., & Zhu, W. (2024). Psychometric properties of the Chinese version of the Need for Privacy Scale. *Digital Health*, 10（N = 1,020；附录 Table A1 列出中英文题目）。
 - 作为稳定个人差异 / 调节变量的应用示例：Wang, F., & Wang, X. (2025). *Frontiers in Psychology*.
-- 论文写法建议：Participants' baseline informational privacy need was measured using four items adapted from the informational privacy dimension of the Need for Privacy Scale (Frener et al., 2024), which has subsequently been validated in a Chinese sample (Wang et al., 2024).
+- 论文写法建议：Participants' baseline informational privacy need was measured using the four items of the informational privacy dimension of the Need for Privacy Scale (Frener et al., 2024), which has subsequently been validated in a Chinese sample (Wang et al., 2024).
 
 题前说明：“请根据您通常的想法，评价您对以下陈述的同意程度。这里询问的是您平时的一般倾向，而不是某一条具体信息。”
 
@@ -229,13 +229,13 @@
 
 | 变量 | 题目（中文 / English） |
 |---|---|
-| `privacy_need_1` | 一般来说，我希望别人少了解一些关于我的事情。/ In general, I would like others to know less about me. |
-| `privacy_need_2` | 通常，我倾向于不让太多人了解我。/ Usually, I prefer not to let too many people get to know me. |
-| `privacy_need_3` | 我不希望自己的个人资料被公开或被无关的人随意获取。/ I do not want my personal data to be made public or freely accessed by unrelated people. |
-| `privacy_need_4` | 我认为并非每个人都有必要了解关于我的一切。/ I think not everyone needs to know everything about me. |
+| `privacy_need_1`（INP1） | 我更希望人们对我了解较少。/ I would prefer that little is known about me. |
+| `privacy_need_2`（INP2） | 一般来说，我更喜欢保持不被人们所知道。/ In general, I prefer to remain unknown. |
+| `privacy_need_3`（INP3） | 我不希望自己的个人资料可以被公开访问。/ I do not want my personal data to be publicly accessible. |
+| `privacy_need_4`（INP4） | 并非每个人都需要了解我的一切。/ Not everyone has to know everything about me. |
 | `attention_check` | 为确认您在认真作答，请选择 4。/ To show that you are paying attention, please select 4.（7 点量表） |
 
-中文为对 NFP-S 信息隐私维度的情境化表述；英文目前是中文的回译，**【待核对】**正式使用前应替换为 Wang et al. (2024) Table A1 / Frener et al. (2024) 中的原英文题目。
+题目原样采用：英文为 NFP-S 原题（Frener et al., 2024），中文为中文版验证论文的译法（Wang et al., 2024, 附录 Table A1），未做改写。量表与原版一致为 5 点；其余评分题仍为 7 点，不同构念使用不同量尺没有问题，建模前将 `privacy_need_mean` 标准化（\(Q_i^z = (Q_i - \bar{Q}) / SD(Q)\)）即可。
 
 派生变量（导出时计算）：
 

@@ -57,40 +57,40 @@ export const PRIVACY_NEED_INTRO = {
 };
 
 /**
- * Informational need for privacy, 4 items, from the Need for Privacy Scale
- * (Frener, Dombrowski & Trepte, 2024; Chinese version: Wang, Cheng & Zhu, 2024).
- * All positively keyed.
+ * Informational need for privacy (INP1–INP4) of the Need for Privacy Scale,
+ * original wording (Frener, Dombrowski & Trepte, 2024; Chinese wording from
+ * Wang, Cheng & Zhu, 2024, Table A1). All positively keyed.
  */
 export const PRIVACY_NEED_QUESTIONS = [
   {
     id: 'privacy_need_1',
     text: {
-      en: 'In general, I would like others to know less about me.',
-      zh: '一般来说，我希望别人少了解一些关于我的事情。',
+      en: 'I would prefer that little is known about me.',
+      zh: '我更希望人们对我了解较少。',
     },
     labels: LIKERT_AGREE_5,
   },
   {
     id: 'privacy_need_2',
     text: {
-      en: 'Usually, I prefer not to let too many people get to know me.',
-      zh: '通常，我倾向于不让太多人了解我。',
+      en: 'In general, I prefer to remain unknown.',
+      zh: '一般来说，我更喜欢保持不被人们所知道。',
     },
     labels: LIKERT_AGREE_5,
   },
   {
     id: 'privacy_need_3',
     text: {
-      en: 'I do not want my personal data to be made public or freely accessed by unrelated people.',
-      zh: '我不希望自己的个人资料被公开或被无关的人随意获取。',
+      en: 'I do not want my personal data to be publicly accessible.',
+      zh: '我不希望自己的个人资料可以被公开访问。',
     },
     labels: LIKERT_AGREE_5,
   },
   {
     id: 'privacy_need_4',
     text: {
-      en: 'I think not everyone needs to know everything about me.',
-      zh: '我认为并非每个人都有必要了解关于我的一切。',
+      en: 'Not everyone has to know everything about me.',
+      zh: '并非每个人都需要了解我的一切。',
     },
     labels: LIKERT_AGREE_5,
   },
