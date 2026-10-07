@@ -115,6 +115,9 @@ export function createEmptyAnswers() {
     privacy_control: null,
     permission_preference: null,
     sharing_comfort: null,
+    dtvp_1: null,
+    dtvp_2: null,
+    dtvp_3: null,
     attention_check: null,
     ...createEmptyComprehensionAnswers(),
 

@@ -100,6 +100,9 @@ export function validateScreen(session, screenId) {
       requireLikert(answers.privacy_control, 'privacy_control');
       requireLikert(answers.permission_preference, 'permission_preference');
       requireLikert(answers.sharing_comfort, 'sharing_comfort');
+      requireLikert(answers.dtvp_1, 'dtvp_1');
+      requireLikert(answers.dtvp_2, 'dtvp_2');
+      requireLikert(answers.dtvp_3, 'dtvp_3');
       requireLikert(answers.attention_check, 'attention_check');
       break;
 

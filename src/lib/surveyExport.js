@@ -9,22 +9,31 @@ import {
   PRIMARY_BASIS_VALUES,
   RELATIONSHIP_FACTORS,
 } from '../config/study.js';
-import { ATTENTION_CHECK, BASELINE_QUESTIONS } from '../config/surveyQuestions.js';
+import {
+  ATTENTION_CHECK,
+  BASELINE_QUESTIONS,
+  DTVP_QUESTIONS,
+} from '../config/surveyQuestions.js';
 import { COMPREHENSION_COLUMNS, comprehensionExportFields } from './comprehension.js';
 import { normalizeLikert } from './likertScale.js';
 
 /**
- * Mean of the 3 general privacy items (1–7), reverse-coded items as 8 − x.
- * The attention check is excluded. Null if any item is missing.
+ * Mean of Likert items (1–7), reverse-coded items as 8 − x. Null if any item
+ * is missing.
  */
-export function generalPrivacyConcern(session) {
-  const scores = BASELINE_QUESTIONS.map((q) => {
+function meanScore(session, questions) {
+  const scores = questions.map((q) => {
     const v = session[q.id];
     if (!Number.isInteger(v)) return null;
     return q.reverse ? 8 - v : v;
   });
   if (scores.some((s) => s === null)) return null;
   return scores.reduce((sum, s) => sum + s, 0) / scores.length;
+}
+
+/** Mean of the 3 general privacy items; the attention check is excluded. */
+export function generalPrivacyConcern(session) {
+  return meanScore(session, BASELINE_QUESTIONS);
 }
 
 export function attentionCheckPassed(session) {
@@ -59,6 +68,10 @@ const WIDE_COLUMNS = [
   'permission_preference',
   'sharing_comfort',
   'general_privacy_concern',
+  'dtvp_1',
+  'dtvp_2',
+  'dtvp_3',
+  'dtvp_mean',
   'attention_check',
   'attention_check_passed',
   ...COMPREHENSION_COLUMNS,
@@ -145,6 +158,10 @@ const LONG_COLUMNS = [
   'permission_preference',
   'sharing_comfort',
   'general_privacy_concern',
+  'dtvp_1',
+  'dtvp_2',
+  'dtvp_3',
+  'dtvp_mean',
   'attention_check',
   'attention_check_passed',
   ...COMPREHENSION_COLUMNS,
@@ -245,6 +262,7 @@ const SCENARIO_COLUMNS = [
   'gender',
   'gender_self_describe',
   'general_privacy_concern',
+  'dtvp_mean',
   'attention_check_passed',
   ...COMPREHENSION_COLUMNS,
   'assignment_seed',
@@ -282,6 +300,7 @@ function flattenSession(session) {
   return {
     ...session,
     general_privacy_concern: generalPrivacyConcern(session),
+    dtvp_mean: meanScore(session, DTVP_QUESTIONS),
     attention_check_passed: attentionCheckPassed(session),
     ...comprehensionExportFields(session),
     study_mode: session.study_mode ?? null,
@@ -340,6 +359,10 @@ export function toLongRows(session) {
     permission_preference: flat.permission_preference,
     sharing_comfort: flat.sharing_comfort,
     general_privacy_concern: flat.general_privacy_concern,
+    dtvp_1: flat.dtvp_1,
+    dtvp_2: flat.dtvp_2,
+    dtvp_3: flat.dtvp_3,
+    dtvp_mean: flat.dtvp_mean,
     attention_check: flat.attention_check,
     attention_check_passed: flat.attention_check_passed,
     ...Object.fromEntries(COMPREHENSION_COLUMNS.map((c) => [c, flat[c]])),
@@ -526,6 +549,7 @@ export function toScenarioRows(session) {
       gender: flat.gender ?? null,
       gender_self_describe: flat.gender_self_describe ?? null,
       general_privacy_concern: flat.general_privacy_concern,
+      dtvp_mean: flat.dtvp_mean,
       attention_check_passed: flat.attention_check_passed,
       ...Object.fromEntries(COMPREHENSION_COLUMNS.map((c) => [c, flat[c]])),
       assignment_seed: round.assignment_seed ?? null,

@@ -6,6 +6,7 @@ import {
 import {
   ATTENTION_CHECK,
   BASELINE_QUESTIONS,
+  DTVP_QUESTIONS,
 } from '../../../config/surveyQuestions.js';
 import { useLanguage } from '../../../i18n/LanguageContext.jsx';
 import LikertScale from '../LikertScale.jsx';
@@ -88,7 +89,7 @@ function BaselineScreen({ answers, onChange, onBack, onNext, errors }) {
           </>
         ) : null}
 
-        {BASELINE_QUESTIONS.map((q) => (
+        {[...BASELINE_QUESTIONS, ...DTVP_QUESTIONS].map((q) => (
           <LikertScale
             key={q.id}
             question={q.text}

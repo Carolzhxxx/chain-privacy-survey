@@ -38,6 +38,37 @@ export const BASELINE_QUESTIONS = [
   },
 ];
 
+/**
+ * Disposition to Value Privacy (Xu, Dinev, Smith & Hart, 2011, JAIS), 3 items,
+ * adapted from online companies to other people.
+ */
+export const DTVP_QUESTIONS = [
+  {
+    id: 'dtvp_1',
+    text: {
+      en: 'Compared to others, I am more sensitive about the way other people handle my personal information.',
+      zh: '与其他人相比，我对别人如何对待我的个人信息更加敏感。',
+    },
+    labels: LIKERT_AGREE,
+  },
+  {
+    id: 'dtvp_2',
+    text: {
+      en: 'To me, it is the most important thing to keep my privacy.',
+      zh: '对我来说，保护自己的隐私是最重要的事情。',
+    },
+    labels: LIKERT_AGREE,
+  },
+  {
+    id: 'dtvp_3',
+    text: {
+      en: 'Compared to others, I tend to be more concerned about threats to my personal privacy.',
+      zh: '与其他人相比，我更容易担心自己的个人隐私受到威胁。',
+    },
+    labels: LIKERT_AGREE,
+  },
+];
+
 export const ATTENTION_CHECK = {
   id: 'attention_check',
   text: {

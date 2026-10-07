@@ -185,7 +185,10 @@ analysis time, e.g. `knows_ac === false ? 0 : (r_ac − 1) / 6`.
 (`sharing_comfort` reverse-coded as 8 − x). It is not labelled IUIPC because
 the items are not a validated IUIPC version. The attention check is excluded
 from it and exported separately as `attention_check_passed` (selected 4).
-Age and gender are demographic controls.
+`dtvp_1`–`dtvp_3` are the Disposition to Value Privacy items (Xu, Dinev, Smith
+& Hart, 2011, JAIS), adapted from "online companies" to "other people";
+`dtvp_mean` is their mean (no reverse items) and is the main baseline privacy
+covariate. Age and gender are demographic controls.
 
 A comprehension-check page follows the Person D page, right before the first
 rating (questions in
